@@ -1,0 +1,113 @@
+:root {
+  --most-dark: #111111;
+  --most-light: #999999;
+  --light: #777777;
+  --middle: #555555;
+  --dark: #333333;
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 100vh;
+  /* background-color: var(--dark); */
+}
+
+.login-form {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 400px;
+  height: 550px;
+  /* background-color: var(--most-dark); */
+  color: var(--dark);
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  box-shadow: 0px 0px 15px 0px var(--middle);
+}
+
+.login-form > h1 {
+  color: var(--most-dark);
+  position: absolute;
+  top: 30px;
+}
+
+.login-form > div {
+  display: flex;
+  width: 80%;
+  margin-top: 6px;
+}
+
+.login-form > div > label {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.login-form > input {
+  outline: none;
+  height: 25px;
+  width: 80%;
+  border-radius: 5px;
+  padding: 4px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border-top: 0px #333333;
+  border-right: #333333;
+  border-left: #333333;
+  border-bottom: solid 2px #333333;
+}
+
+.login-form > button {
+  position: absolute;
+  bottom: 60px;
+  color: white;
+  font-weight: 600;
+  font-size: 30px;
+  background-color: var(--dark);
+  margin: 20px;
+  width: 250px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  z-index: 0;
+}
+
+.login-form > button:hover {
+  background: var(--most-dark);
+  cursor: pointer;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.login-form > section {
+  position: absolute;
+  bottom: 30px;
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+}
+
+/* .checkbox {
+  opacity: 0;
+} */
+
+.round {
+  height: 10px;
+  width: 10px;
+  margin-left: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--most-dark);
+}
+
+input[type='checkbox']:checked + label {
+  background-color: green;
+}
