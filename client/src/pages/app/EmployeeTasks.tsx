@@ -8,7 +8,7 @@ import {
 import { useEffect, useState, forwardRef, MouseEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { DBTask } from '../../features/tasks/taskSlice'
-import { deleteTask } from '../../features/tasks/taskSlice'
+import { deleteTask, completeTask } from '../../features/tasks/taskSlice'
 import { toast, ToastContainer } from 'react-toastify'
 
 import AddBox from '@material-ui/icons/AddBox'
@@ -46,7 +46,7 @@ const Tasks = () => {
     if (userId) dispatch(getEmployeeTasks(userId))
   }, [])
 
-  const [open, setOpen] = useState(false)
+  const [openComplete, setOpenComplete] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [task, setTask] = useState({} as DBTask)
 
@@ -60,8 +60,8 @@ const Tasks = () => {
     { title: 'Compleated at', field: 'compleatedAt' },
     { title: 'Assigned at', field: 'assignedAt' },
   ]
-
-  const taskData = allTasks.map((task) => ({ ...task }))
+  console.log(allTasks)
+  const taskData = allTasks?.map((task) => ({ ...task }))
 
   const tableIcons: Icons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -117,7 +117,7 @@ const Tasks = () => {
     if (successMessage) {
       success(successMessage)
       dispatch(setSuccessMessage(''))
-      setOpen(false)
+      setOpenComplete(false)
       setOpenDelete(false)
     }
   }, [errorMessage, successMessage, isError, isSuccess])
@@ -125,6 +125,11 @@ const Tasks = () => {
   const handleDeleteTask = (e: MouseEvent) => {
     e.preventDefault()
     dispatch(deleteTask(task._id))
+  }
+
+  const handleCompleteTask = (e: MouseEvent) => {
+    e.preventDefault()
+    dispatch(completeTask(task._id))
   }
 
   return (
@@ -135,12 +140,6 @@ const Tasks = () => {
         title='Employee tasks'
         columns={columns}
         data={taskData}
-        onRowClick={(event, rowData) => {
-          if (rowData) {
-            console.log(rowData)
-            setOpen(true)
-          }
-        }}
         actions={[
           {
             icon: () => <DeleteOutline />,
@@ -158,21 +157,26 @@ const Tasks = () => {
             tooltip: 'Edit task',
             onClick: (event, rowData) => {
               console.log(rowData)
+              setOpenComplete(true)
             },
           },
           {
             icon: () => <CheckIcon />,
             tooltip: 'Compleate task',
             onClick: (event, rowData) => {
-              console.log(rowData)
+              if (rowData instanceof Array) return
+              if (rowData) {
+                setOpenComplete(true)
+                setTask(rowData)
+              }
             },
           },
         ]}
         options={{ actionsColumnIndex: -1 }}
       />
       <CompleteTaskModal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={openComplete}
+        onClose={() => setOpenComplete(false)}
         task={task}
       />
       <DeleteTaskModal

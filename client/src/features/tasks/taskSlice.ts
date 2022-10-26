@@ -77,12 +77,13 @@ export const getEmployeeTasks = createAsyncThunk(
 
 export const completeTask = createAsyncThunk(
   'compleate-task',
-  async (taskData: DBTask, thunkAPI) => {
+  async (taskId: string, thunkAPI) => {
     try {
-      const response = await axios.patch(`/task/${taskData._id}`)
-      if (response) return response.data
+      const response = await axios.patch(`/task/${taskId}`)
+      if (response) thunkAPI.dispatch(setSuccessMessage(response.data.message))
     } catch (error) {
-      if (axios.isAxiosError(error)) return error.response?.data.message
+      if (axios.isAxiosError(error))
+        thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
     }
   }
 )

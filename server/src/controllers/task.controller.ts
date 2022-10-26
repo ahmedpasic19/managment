@@ -64,22 +64,14 @@ const compleatedTask = async (req: Request, res: Response) => {
 
     if (!taskId) return res.status(400).json({ message: 'Task ID requred' })
 
-    const { progress, isDone, compleatedAt }: ITask = req.body
-
-    if (!progress && !isDone && !compleatedAt)
-      return res.status(400).json({ message: 'Add a change' })
-
     const selectedTask = await Task.findOne({ _id: taskId })
 
     if (!selectedTask)
       return res.status(404).json({ message: 'Task not found' })
 
-    const updatedTask = {
-      progress: progress ? progress : '',
-      isDone: isDone ? isDone : '',
-      compleatedAt: compleatedAt ? compleatedAt : '',
-    }
-    await Task.findOneAndUpdate({ _id: taskId }, updatedTask)
+    console.log(selectedTask)
+
+    // await Task.findOneAndUpdate({ _id: taskId }, updatedTask)
 
     res.status(200).json({ message: 'Task successfuly updated' })
   } catch (error) {
