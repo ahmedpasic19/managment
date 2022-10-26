@@ -39,8 +39,11 @@ type Task = {
 }
 
 const AssignTasks = () => {
-  const { users, successMessage, errorMessage, isSuccess, isError } =
-    useAppSelector((state) => state.users)
+  const { users } = useAppSelector((state) => state.users)
+
+  const { successMessage, errorMessage, isSuccess, isError } = useAppSelector(
+    (state) => state.tasks
+  )
 
   const [open, setOpen] = useState(false)
   const [newTask, setNewTask] = useState({} as Task)
@@ -101,7 +104,7 @@ const AssignTasks = () => {
       pauseOnHover: false,
     })
   }
-  console.log(successMessage, errorMessage)
+
   useEffect(() => {
     if (errorMessage) {
       error(errorMessage)
@@ -148,6 +151,7 @@ const AssignTasks = () => {
 
   return (
     <div style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ToastContainer />
       <h1>Assign task</h1>
       <div style={{ width: '80%' }}>
         <MaterialTable
