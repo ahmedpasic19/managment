@@ -26,4 +26,6 @@ app.use('/api/user', userRouter)
 app.use('/api/logout', logoutRoute)
 app.use('/api/task', taskRouter)
 
-app.listen(PORT, () => console.log('Running on port: ', PORT))
+app.listen(PORT, () =>
+  console.log('Running on port: ', PORT, 'Process id: ', process.pid)
+)

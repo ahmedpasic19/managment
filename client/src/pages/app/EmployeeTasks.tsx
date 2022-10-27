@@ -60,8 +60,8 @@ const Tasks = () => {
     { title: 'Compleated at', field: 'compleatedAt' },
     { title: 'Assigned at', field: 'assignedAt' },
   ]
-  console.log(allTasks)
-  const taskData = allTasks?.map((task) => ({ ...task }))
+
+  const taskData = allTasks.map((task) => ({ ...task }))
 
   const tableIcons: Icons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -133,7 +133,7 @@ const Tasks = () => {
   }
 
   return (
-    <div style={{ width: '80%' }}>
+    <div >
       <ToastContainer />
       <MaterialTable
         icons={tableIcons}
@@ -177,6 +177,7 @@ const Tasks = () => {
       <CompleteTaskModal
         open={openComplete}
         onClose={() => setOpenComplete(false)}
+        completeTask={handleCompleteTask}
         task={task}
       />
       <DeleteTaskModal

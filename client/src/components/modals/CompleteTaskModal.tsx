@@ -1,14 +1,16 @@
 import ReactDOM from 'react-dom'
 import styles from './AssignTaskModal.module.css'
 import { DBTask } from '../../features/tasks/taskSlice'
+import { MouseEvent } from 'react'
 
 type Props = {
   open: boolean
   onClose: () => void
+  completeTask: (e: MouseEvent<HTMLButtonElement>) => void
   task: DBTask
 }
 
-const CompleteTaskModal = ({ open, onClose, task }: Props) => {
+const CompleteTaskModal = ({ open, onClose, task, completeTask }: Props) => {
   if (!open) return null
 
   return ReactDOM.createPortal(
@@ -21,7 +23,7 @@ const CompleteTaskModal = ({ open, onClose, task }: Props) => {
           <input type='text' value={task.location} readOnly />
         </form>
         <section className='modal-btn'>
-          <button>Complete</button>
+          <button onClick={completeTask}>Complete</button>
           <button onClick={onClose}>Close</button>
         </section>
       </div>

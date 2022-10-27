@@ -69,9 +69,20 @@ const compleatedTask = async (req: Request, res: Response) => {
     if (!selectedTask)
       return res.status(404).json({ message: 'Task not found' })
 
-    console.log(selectedTask)
+    if (selectedTask.isDone || selectedTask.progress === 'Completed')
+      return res.status(404).json({ message: 'Task already completed' })
 
-    // await Task.findOneAndUpdate({ _id: taskId }, updatedTask)
+    let today = new Date()
+    let date =
+      today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear()
+
+    const updatedTask = {
+      isDone: true,
+      progress: 'Completed',
+      compleatedAt: date,
+    }
+
+    await Task.findOneAndUpdate({ _id: taskId }, updatedTask)
 
     res.status(200).json({ message: 'Task successfuly updated' })
   } catch (error) {
