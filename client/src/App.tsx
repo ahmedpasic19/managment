@@ -3,6 +3,7 @@ import {
   Login,
   Register,
   HomePage,
+  AllTasks,
   AssignTasks,
   EmployeeTasks,
 } from './pages/pages'
@@ -24,11 +25,12 @@ function App() {
           {/* Page routes */}
           <Route path='/'>
             <Route path='homepage' element={<HomePage />} />
-            <Route path='tasks' element={<EmployeeTasks />} />
+            <Route path='my-tasks' element={<EmployeeTasks />} />
+            <Route path='tasks' element={<AllTasks />} />
           </Route>
           {/* Requre permission */}
           <Route path='/'>
-            <Route path='assign-tasks' element={<AssignTasks />} />
+            <Route path='employees' element={<AssignTasks />} />
           </Route>
         </Routes>
       </Router>

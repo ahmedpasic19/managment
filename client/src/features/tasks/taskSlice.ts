@@ -77,7 +77,7 @@ export const getEmployeeTasks = createAsyncThunk(
 
 export const completeTask = createAsyncThunk(
   'compleate-task',
-  async (taskId: string, thunkAPI) => {
+  async ({ taskId }: { taskId: string; multi?: boolean }, thunkAPI) => {
     try {
       const response = await axios.patch(`/task/${taskId}`)
       if (response) {
@@ -93,12 +93,15 @@ export const completeTask = createAsyncThunk(
 
 export const deleteTask = createAsyncThunk(
   'delete-task',
-  async (taskId: string, thunkAPI) => {
+  async ({ taskId, multi }: { taskId: string; multi?: boolean }, thunkAPI) => {
     try {
       const response = await axios.delete(`/task/${taskId}`)
       if (response) thunkAPI.dispatch(setSuccessMessage(response.data.message))
-
-      thunkAPI.dispatch(getEmployeeTasks('634599a0ed37396a3161db13'))
+      if (multi) {
+        thunkAPI.dispatch(getAllTasks())
+      } else {
+        thunkAPI.dispatch(getEmployeeTasks('634599a0ed37396a3161db13'))
+      }
     } catch (error) {
       if (axios.isAxiosError(error))
         thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
@@ -108,11 +111,18 @@ export const deleteTask = createAsyncThunk(
 
 export const editTask = createAsyncThunk(
   'edit-task',
-  async (taskData: DBTask, thunkAPI) => {
+  async (
+    { taskData, multi }: { taskData: DBTask; multi?: boolean },
+    thunkAPI
+  ) => {
     try {
       const response = await axios.put(`/task/${taskData._id}`, taskData)
       if (response) thunkAPI.dispatch(setSuccessMessage(response.data.message))
-      thunkAPI.dispatch(getEmployeeTasks('634599a0ed37396a3161db13'))
+      if (multi) {
+        thunkAPI.dispatch(getAllTasks())
+      } else {
+        thunkAPI.dispatch(getEmployeeTasks('634599a0ed37396a3161db13'))
+      }
     } catch (error) {
       if (axios.isAxiosError(error))
         thunkAPI.dispatch(setErrorMessage(error.response?.data.message))

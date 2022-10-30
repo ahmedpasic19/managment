@@ -1,16 +1,40 @@
 import ReactDOM from 'react-dom'
 import styles from './AssignTaskModal.module.css'
 import { MouseEvent } from 'react'
+import { AsyncThunk } from '@reduxjs/toolkit'
+import { useAppDispatch } from '../../../app/hooks'
 
 type Props = {
   open: boolean
   onClose: () => void
   taskId: string
-  deleteTask: (e: MouseEvent<HTMLButtonElement>) => void
+  multi?: boolean
+  deleteTask: AsyncThunk<
+    void,
+    { taskId: string; multi?: boolean | undefined },
+    {}
+  >
 }
 
-const DeleteTaskModal = ({ open, onClose, taskId, deleteTask }: Props) => {
+const DeleteTaskModal = ({
+  open,
+  onClose,
+  taskId,
+  deleteTask,
+  multi,
+}: Props) => {
+  const dispatch = useAppDispatch()
+
   if (!open) return null
+
+  const submit = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if (multi) {
+      dispatch(deleteTask({ taskId, multi }))
+    } else {
+      dispatch(deleteTask({ taskId }))
+    }
+  }
 
   return ReactDOM.createPortal(
     <>
@@ -20,7 +44,7 @@ const DeleteTaskModal = ({ open, onClose, taskId, deleteTask }: Props) => {
           <h3>Do you want to delete this task?</h3>
         </span>
         <div>
-          <button onClick={deleteTask}>Delete</button>
+          <button onClick={submit}>Delete</button>
           <button onClick={onClose}>Close</button>
         </div>
       </div>

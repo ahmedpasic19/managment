@@ -9,9 +9,14 @@ type Props = {
   open: boolean
   onClose: () => void
   task: DBTask
-  editTask: AsyncThunk<void, DBTask, {}>
+  editTask: AsyncThunk<
+    void,
+    { taskData: DBTask; multi?: boolean | undefined },
+    {}
+  >
   setTask: (value: DBTask) => void
   employeeEdit?: boolean | string
+  multi?: boolean
 }
 
 const EditTaskModal = ({
@@ -21,6 +26,7 @@ const EditTaskModal = ({
   employeeEdit,
   editTask,
   setTask,
+  multi,
 }: Props) => {
   const dispatch = useAppDispatch()
 
@@ -39,8 +45,11 @@ const EditTaskModal = ({
       task.assignedTo !== '' ||
       task.compleatedAt !== ''
     )
-      dispatch(editTask(task))
-    return
+      if (multi) {
+        dispatch(editTask({ taskData: task, multi }))
+      } else {
+        dispatch(editTask({ taskData: task }))
+      }
   }
 
   return ReactDOM.createPortal(
