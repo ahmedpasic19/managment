@@ -16,11 +16,13 @@ import MaterialTable from 'material-table'
 import { ToastContainer } from 'react-toastify'
 import { toast } from 'react-toastify'
 
-import AssignTskModal from '../../components/modals/tasks/AssignTaskModal'
+import AssignTaskModal from '../../components/modals/tasks/AssignTaskModal'
 import DeleteUserModal from '../../components/modals/users/DeleteUserModal'
 
 //Icons
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
+import Edit from '@material-ui/icons/Edit'
+import AssignmentIcon from '@mui/icons-material/Assignment'
 
 type Task = {
   title: string
@@ -32,32 +34,26 @@ type Task = {
 }
 
 const AssignTasks = () => {
-  const { users } = useAppSelector((state) => state.users)
+  const { users, usersSuccessMessage, usersErrorMessage } = useAppSelector(
+    (state) => state.users
+  )
 
   const { successMessage, errorMessage, isSuccess, isError } = useAppSelector(
     (state) => state.tasks
   )
 
-  const { usersSuccessMessage, usersErrorMessage } = useAppSelector(
-    (state) => state.users
-  )
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(getAllUsers())
+  }, [])
 
   const [openDelete, setOpenDelete] = useState(false)
   const [openAssign, setOpenAssign] = useState(false)
   const [newTask, setNewTask] = useState({} as Task)
   const [user, setUser] = useState({} as DBUser)
 
-  const dispatch = useAppDispatch()
-
   //Toasts
-  const fields = () => {
-    toast.error('Input all fileds', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: true,
-      pauseOnHover: false,
-    })
-  }
   const error = (errorMessage: string) => {
     toast.error(errorMessage, {
       position: 'top-center',
@@ -97,12 +93,9 @@ const AssignTasks = () => {
       success(usersErrorMessage)
       dispatch(setUserSuccessMessage(''))
       setOpenDelete(false)
+      setOpenAssign(false)
     }
   }, [usersErrorMessage, usersSuccessMessage])
-
-  useEffect(() => {
-    dispatch(getAllUsers())
-  }, [])
 
   const columns = [
     { title: 'Email', field: 'email' },
@@ -116,21 +109,6 @@ const AssignTasks = () => {
   })
 
   const userData = userDataArray?.map((user) => ({ ...user }))
-
-  const handleCreateTask = (e: MouseEvent<HTMLElement>) => {
-    e.preventDefault()
-    let keys = Object.values(newTask).every((key) => key.trim())
-    if (!keys) return fields()
-    if (keys)
-      dispatch(
-        assignTask({
-          ...newTask,
-          assignedAt: '12:00',
-          assignedTo: user._id,
-          username: user.firstName,
-        })
-      )
-  }
 
   return (
     <div style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -153,21 +131,33 @@ const AssignTasks = () => {
                 }
               },
             },
+            {
+              icon: () => <AssignmentIcon />,
+              tooltip: 'Assign new task',
+              onClick: (event, rowData) => {
+                if (rowData instanceof Array) return
+                if (rowData) {
+                  setUser(rowData)
+                  setOpenAssign(true)
+                }
+              },
+            },
           ]}
           options={{
             actionsColumnIndex: -1,
           }}
         />
       </div>
-      <AssignTskModal
+      <AssignTaskModal
         open={openAssign}
         onClose={() => {
           setOpenAssign(false)
           setNewTask({} as Task)
         }}
+        user={user}
         newTask={newTask}
         setNewTask={setNewTask}
-        handleCreateTask={handleCreateTask}
+        assignTask={assignTask}
       />
       <DeleteUserModal
         open={openDelete}

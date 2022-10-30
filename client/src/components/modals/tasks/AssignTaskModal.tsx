@@ -1,6 +1,10 @@
 import ReactDOM from 'react-dom'
 import { ChangeEvent, MouseEvent } from 'react'
 import styles from './AssignTaskModal.module.css'
+import { AsyncThunk } from '@reduxjs/toolkit'
+import { DBUser } from '../../../features/users/userSlice'
+import { useAppDispatch } from '../../../app/hooks'
+import { toast } from 'react-toastify'
 
 type Task = {
   title: string
@@ -16,7 +20,8 @@ type Props = {
   onClose: () => void
   newTask: Task
   setNewTask: (value: Task) => void
-  handleCreateTask: (e: MouseEvent<HTMLButtonElement>) => void
+  assignTask: AsyncThunk<any, Task, {}>
+  user: DBUser
 }
 
 const AssignTskModal = ({
@@ -24,9 +29,21 @@ const AssignTskModal = ({
   onClose,
   newTask,
   setNewTask,
-  handleCreateTask,
+  assignTask,
+  user,
 }: Props) => {
+  const dispatch = useAppDispatch()
+
   if (!open) return null
+
+  const fields = () => {
+    toast.error('Input all fileds', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: true,
+      pauseOnHover: false,
+    })
+  }
 
   const handleOnchange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -35,6 +52,21 @@ const AssignTskModal = ({
     let newObj = { ...newTask }
     newObj[name as 'location' | 'description' | 'location'] = value
     setNewTask(newObj)
+  }
+
+  const handleCreateTask = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    let keys = Object.values(newTask).every((key) => key.trim())
+    if (!keys) return fields()
+    if (keys)
+      dispatch(
+        assignTask({
+          ...newTask,
+          assignedAt: '12:00',
+          assignedTo: user._id,
+          username: user.firstName,
+        })
+      )
   }
 
   return ReactDOM.createPortal(
