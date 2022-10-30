@@ -6,8 +6,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {
-  setSuccessMessage,
-  setErrorMessage,
+  setUserSuccessMessage,
+  setUserErrorMessage,
   setMessage,
 } from '../../features/users/userSlice'
 import { useNavigate } from 'react-router-dom'
@@ -65,8 +65,8 @@ const Register = () => {
     isSuccess,
     user,
     message,
-    successMessage,
-    errorMessage,
+    usersSuccessMessage,
+    usersErrorMessage,
   } = useAppSelector((state) => state.users)
 
   useEffect(() => {
@@ -77,20 +77,20 @@ const Register = () => {
       return
     }
     //Clear state from form if user created
-    if (successMessage) {
-      success(successMessage)
-      dispatch(setSuccessMessage(''))
+    if (usersSuccessMessage) {
+      success(usersSuccessMessage)
+      dispatch(setUserSuccessMessage(''))
       setUserData({} as User)
       navigate('/homepage')
       setUserType(null)
       return
     }
-    if (errorMessage) {
-      error(errorMessage)
-      dispatch(setErrorMessage(''))
+    if (usersErrorMessage) {
+      error(usersErrorMessage)
+      dispatch(setUserErrorMessage(''))
       return
     }
-  }, [isError, isSuccess, message, successMessage, errorMessage])
+  }, [isError, isSuccess, message, usersSuccessMessage, usersErrorMessage])
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()

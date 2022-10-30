@@ -1,11 +1,11 @@
-import MaterialTable, { Icons } from 'material-table'
+import MaterialTable from 'material-table'
 import {
   getAllTasks,
   getEmployeeTasks,
   setErrorMessage,
   setSuccessMessage,
 } from '../../features/tasks/taskSlice'
-import { useEffect, useState, forwardRef, MouseEvent } from 'react'
+import { useEffect, useState, MouseEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { DBTask } from '../../features/tasks/taskSlice'
 import {
@@ -15,26 +15,14 @@ import {
 } from '../../features/tasks/taskSlice'
 import { toast, ToastContainer } from 'react-toastify'
 
-import AddBox from '@material-ui/icons/AddBox'
-import ArrowDownward from '@material-ui/icons/ArrowDownward'
-import Check from '@material-ui/icons/Check'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
-import ChevronRight from '@material-ui/icons/ChevronRight'
-import Clear from '@material-ui/icons/Clear'
+//Icons
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
 import Edit from '@material-ui/icons/Edit'
-import FilterList from '@material-ui/icons/FilterList'
-import FirstPage from '@material-ui/icons/FirstPage'
-import LastPage from '@material-ui/icons/LastPage'
-import Remove from '@material-ui/icons/Remove'
-import SaveAlt from '@material-ui/icons/SaveAlt'
-import Search from '@material-ui/icons/Search'
-import ViewColumn from '@material-ui/icons/ViewColumn'
 import CheckIcon from '@mui/icons-material/Check'
 
-import CompleteTaskModal from '../../components/modals/CompleteTaskModal'
-import DeleteTaskModal from '../../components/modals/DeleteTaskModal'
-import EditTaskModal from '../../components/modals/EditTaskModal'
+import CompleteTaskModal from '../../components/modals/tasks/CompleteTaskModal'
+import DeleteTaskModal from '../../components/modals/tasks/DeleteTaskModal'
+import EditTaskModal from '../../components/modals/tasks/EditTaskModal'
 
 const Tasks = () => {
   const { allTasks, successMessage, errorMessage, isSuccess, isError } =
@@ -69,39 +57,11 @@ const Tasks = () => {
 
   const taskData = allTasks.map((task) => ({ ...task }))
 
-  const tableIcons: Icons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-    DetailPanel: forwardRef((props, ref) => (
-      <ChevronRight {...props} ref={ref} />
-    )),
-    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    PreviousPage: forwardRef((props, ref) => (
-      <ChevronLeft {...props} ref={ref} />
-    )),
-    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-    SortArrow: forwardRef((props, ref) => (
-      <ArrowDownward {...props} ref={ref} />
-    )),
-    ThirdStateCheck: forwardRef((props, ref) => (
-      <Remove {...props} ref={ref} />
-    )),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-  }
-
   //Toasts
   const error = (errorMessage: string) => {
     toast.error(errorMessage, {
       position: 'top-center',
-      autoClose: 2000,
+      autoClose: 3000,
       hideProgressBar: true,
       pauseOnHover: false,
     })
@@ -109,7 +69,7 @@ const Tasks = () => {
   const success = (successMessage: string) => {
     toast.success(successMessage, {
       position: 'top-center',
-      autoClose: 2000,
+      autoClose: 3000,
       hideProgressBar: true,
       pauseOnHover: false,
     })
@@ -143,7 +103,7 @@ const Tasks = () => {
     <div>
       <ToastContainer />
       <MaterialTable
-        icons={tableIcons}
+        // icons={tableIcons}
         title='Employee tasks'
         columns={columns}
         data={taskData}

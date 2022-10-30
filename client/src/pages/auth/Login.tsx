@@ -5,8 +5,8 @@ import styles from './Login.module.css'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { loginUser } from '../../features/users/userSlice'
 import {
-  setSuccessMessage,
-  setErrorMessage,
+  setUserSuccessMessage,
+  setUserErrorMessage,
   setMessage,
 } from '../../features/users/userSlice'
 
@@ -23,8 +23,8 @@ const Login = () => {
     isSuccess,
     user,
     message,
-    successMessage,
-    errorMessage,
+    usersSuccessMessage,
+    usersErrorMessage,
   } = useAppSelector((state) => state.users)
 
   const dispatch = useAppDispatch()
@@ -63,19 +63,19 @@ const Login = () => {
       dispatch(setMessage(''))
       return
     }
-    if (successMessage) {
-      success(successMessage)
-      dispatch(setSuccessMessage(''))
+    if (usersSuccessMessage) {
+      success(usersSuccessMessage)
+      dispatch(setUserSuccessMessage(''))
       setUserData({} as User)
       navigate('/homepage')
       return
     }
-    if (errorMessage) {
-      error(errorMessage)
-      dispatch(setErrorMessage(''))
+    if (usersErrorMessage) {
+      error(usersErrorMessage)
+      dispatch(setUserErrorMessage(''))
       return
     }
-  }, [isError, isSuccess, message, successMessage, errorMessage])
+  }, [isError, isSuccess, message, usersSuccessMessage, usersErrorMessage])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value

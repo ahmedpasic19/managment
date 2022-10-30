@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom'
 import styles from './AssignTaskModal.module.css'
-import { DBTask } from '../../features/tasks/taskSlice'
+import { DBTask } from '../../../features/tasks/taskSlice'
 import { MouseEvent } from 'react'
 
 type Props = {

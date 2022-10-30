@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom'
 import styles from './AssignTaskModal.module.css'
 import { ChangeEvent, MouseEvent } from 'react'
-import { DBTask } from '../../features/tasks/taskSlice'
+import { DBTask } from '../../../features/tasks/taskSlice'
 import { AsyncThunk } from '@reduxjs/toolkit'
-import { useAppDispatch } from '../../app/hooks'
+import { useAppDispatch } from '../../../app/hooks'
 
 type Props = {
   open: boolean

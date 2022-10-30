@@ -8,8 +8,8 @@ const initialState = {
   isSuccess: false,
   isError: false,
   message: '',
-  successMessage: '',
-  errorMessage: '',
+  usersSuccessMessage: '',
+  usersErrorMessage: '',
 }
 
 type User = {
@@ -35,12 +35,12 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axios.post('/user', userData)
       if (response) {
-        thunkAPI.dispatch(setSuccessMessage(response?.data.message))
+        thunkAPI.dispatch(setUserSuccessMessage(response?.data.message))
         return response.data
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
+        thunkAPI.dispatch(setUserErrorMessage(error.response?.data.message))
       }
     }
   }
@@ -52,12 +52,12 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await axios.post('/user/login', userData)
       if (response) {
-        thunkAPI.dispatch(setSuccessMessage(response?.data.message))
+        thunkAPI.dispatch(setUserSuccessMessage(response?.data.message))
         return response.data
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
+        thunkAPI.dispatch(setUserErrorMessage(error.response?.data.message))
       }
     }
   }
@@ -71,7 +71,7 @@ export const getAllUsers = createAsyncThunk('get-all-users', async () => {
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      setErrorMessage(error.response?.data.message)
+      setUserErrorMessage(error.response?.data.message)
     }
   }
 })
@@ -81,10 +81,26 @@ export const editUser = createAsyncThunk(
   async (userData: DBUser, thunkAPI) => {
     try {
       const response = await axios.put(`/user/${userData._id}`, userData)
-      if (response) thunkAPI.dispatch(setSuccessMessage(response.data.message))
+      if (response)
+        thunkAPI.dispatch(setUserSuccessMessage(response.data.message))
     } catch (error) {
       if (axios.isAxiosError(error))
-        thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
+        thunkAPI.dispatch(setUserErrorMessage(error.response?.data.message))
+    }
+  }
+)
+
+export const deleteUser = createAsyncThunk(
+  'delete-task',
+  async (userId: string, thunkAPI) => {
+    try {
+      const response = await axios.delete(`/user/${userId}`)
+      if (response)
+        thunkAPI.dispatch(setUserSuccessMessage(response.data.message))
+      thunkAPI.dispatch(getAllUsers())
+    } catch (error) {
+      if (axios.isAxiosError(error))
+        thunkAPI.dispatch(setUserErrorMessage(error.response?.data.message))
     }
   }
 )
@@ -96,11 +112,11 @@ const userSlice = createSlice({
     reset: (state) => {
       state = initialState
     },
-    setErrorMessage: (state, action) => {
-      state.errorMessage = action.payload
+    setUserErrorMessage: (state, action) => {
+      state.usersErrorMessage = action.payload
     },
-    setSuccessMessage: (state, action) => {
-      state.successMessage = action.payload
+    setUserSuccessMessage: (state, action) => {
+      state.usersSuccessMessage = action.payload
     },
     setMessage: (state, action) => {
       state.message = action.payload
@@ -175,9 +191,20 @@ const userSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
       })
+      .addCase(deleteUser.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteUser.fulfilled, (state) => {
+        state.isLoading = false
+        state.isSuccess = true
+      })
+      .addCase(deleteUser.rejected, (state) => {
+        state.isLoading = false
+        state.isError = true
+      })
   },
 })
 
-export const { reset, setErrorMessage, setSuccessMessage, setMessage } =
+export const { reset, setUserErrorMessage, setUserSuccessMessage, setMessage } =
   userSlice.actions
 export default userSlice.reducer
