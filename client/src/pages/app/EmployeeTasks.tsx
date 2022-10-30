@@ -8,7 +8,11 @@ import {
 import { useEffect, useState, forwardRef, MouseEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { DBTask } from '../../features/tasks/taskSlice'
-import { deleteTask, completeTask } from '../../features/tasks/taskSlice'
+import {
+  deleteTask,
+  completeTask,
+  editTask,
+} from '../../features/tasks/taskSlice'
 import { toast, ToastContainer } from 'react-toastify'
 
 import AddBox from '@material-ui/icons/AddBox'
@@ -30,6 +34,7 @@ import CheckIcon from '@mui/icons-material/Check'
 
 import CompleteTaskModal from '../../components/modals/CompleteTaskModal'
 import DeleteTaskModal from '../../components/modals/DeleteTaskModal'
+import EditTaskModal from '../../components/modals/EditTaskModal'
 
 const Tasks = () => {
   const { allTasks, successMessage, errorMessage, isSuccess, isError } =
@@ -48,6 +53,7 @@ const Tasks = () => {
 
   const [openComplete, setOpenComplete] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
   const [task, setTask] = useState({} as DBTask)
 
   const columns = [
@@ -119,6 +125,7 @@ const Tasks = () => {
       dispatch(setSuccessMessage(''))
       setOpenComplete(false)
       setOpenDelete(false)
+      setOpenEdit(false)
     }
   }, [errorMessage, successMessage, isError, isSuccess])
 
@@ -133,7 +140,7 @@ const Tasks = () => {
   }
 
   return (
-    <div >
+    <div>
       <ToastContainer />
       <MaterialTable
         icons={tableIcons}
@@ -156,8 +163,11 @@ const Tasks = () => {
             icon: () => <Edit />,
             tooltip: 'Edit task',
             onClick: (event, rowData) => {
-              console.log(rowData)
-              setOpenComplete(true)
+              if (rowData instanceof Array) return
+              if (rowData) {
+                setTask(rowData)
+                setOpenEdit(true)
+              }
             },
           },
           {
@@ -185,6 +195,14 @@ const Tasks = () => {
         onClose={() => setOpenDelete(false)}
         deleteTask={handleDeleteTask}
         taskId={task._id}
+      />
+      <EditTaskModal
+        open={openEdit}
+        onClose={() => setOpenEdit(false)}
+        editTask={editTask}
+        employeeEdit={true}
+        setTask={setTask}
+        task={task}
       />
     </div>
   )
