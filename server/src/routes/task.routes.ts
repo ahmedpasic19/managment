@@ -6,6 +6,7 @@ import {
   editTask,
   getAllTasks,
   getUserTasks,
+  getCompletedTasks,
 } from '../controllers/task.controller'
 export const taskRouter = express.Router()
 
@@ -13,11 +14,12 @@ export const taskRouter = express.Router()
 taskRouter.post('/', assigneTask)
 //Update task to: succes / fail
 taskRouter.patch('/:taskId', compleatedTask)
-//GET specific task
-//GET tasks for user
-taskRouter.get('/:userId', getUserTasks)
 //GET all task
 taskRouter.get('/', getAllTasks)
+//GET completed tasks
+taskRouter.get('/completed-tasks', getCompletedTasks)
+//GET tasks for user
+taskRouter.get('/:userId', getUserTasks)
 //DELETE task
 taskRouter.delete('/:taskId', deleteTask)
 //UPDATE task
