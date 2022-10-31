@@ -8,30 +8,22 @@ import {
 import { useEffect, useState, MouseEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { DBTask } from '../../features/tasks/taskSlice'
-import {
-  deleteTask,
-  completeTask,
-  editTask,
-} from '../../features/tasks/taskSlice'
+import { completeTask } from '../../features/tasks/taskSlice'
 import { toast, ToastContainer } from 'react-toastify'
 
 //Icons
-import DeleteOutline from '@material-ui/icons/DeleteOutline'
-import Edit from '@material-ui/icons/Edit'
 import CheckIcon from '@mui/icons-material/Check'
-
+//Modals
 import CompleteTaskModal from '../../components/modals/tasks/CompleteTaskModal'
-import DeleteTaskModal from '../../components/modals/tasks/DeleteTaskModal'
-import EditTaskModal from '../../components/modals/tasks/EditTaskModal'
 
-const Tasks = () => {
+const EmployeeTasks = () => {
   const { allTasks, successMessage, errorMessage, isSuccess, isError } =
     useAppSelector((state) => state.tasks)
 
   const dispatch = useAppDispatch()
 
   //ID from local storage
-  const userId = '634599a0ed37396a3161db13'
+  const userId = '635eb1572f1019d89eccbba8'
   // const userId = false
 
   useEffect(() => {
@@ -40,8 +32,6 @@ const Tasks = () => {
   }, [])
 
   const [openComplete, setOpenComplete] = useState(false)
-  const [openDelete, setOpenDelete] = useState(false)
-  const [openEdit, setOpenEdit] = useState(false)
   const [task, setTask] = useState({} as DBTask)
 
   const columns = [
@@ -84,20 +74,8 @@ const Tasks = () => {
       success(successMessage)
       dispatch(setSuccessMessage(''))
       setOpenComplete(false)
-      setOpenDelete(false)
-      setOpenEdit(false)
     }
   }, [errorMessage, successMessage, isError, isSuccess])
-
-  const handleDeleteTask = (e: MouseEvent) => {
-    e.preventDefault()
-    dispatch(deleteTask(task._id))
-  }
-
-  const handleCompleteTask = (e: MouseEvent) => {
-    e.preventDefault()
-    dispatch(completeTask(task._id))
-  }
 
   return (
     <div>
@@ -108,28 +86,6 @@ const Tasks = () => {
         columns={columns}
         data={taskData}
         actions={[
-          {
-            icon: () => <DeleteOutline />,
-            tooltip: 'Delete task',
-            onClick: (event, rowData) => {
-              if (rowData instanceof Array) return
-              if (rowData) {
-                setTask(rowData)
-                setOpenDelete(true)
-              }
-            },
-          },
-          {
-            icon: () => <Edit />,
-            tooltip: 'Edit task',
-            onClick: (event, rowData) => {
-              if (rowData instanceof Array) return
-              if (rowData) {
-                setTask(rowData)
-                setOpenEdit(true)
-              }
-            },
-          },
           {
             icon: () => <CheckIcon />,
             tooltip: 'Compleate task',
@@ -147,25 +103,11 @@ const Tasks = () => {
       <CompleteTaskModal
         open={openComplete}
         onClose={() => setOpenComplete(false)}
-        completeTask={handleCompleteTask}
-        task={task}
-      />
-      <DeleteTaskModal
-        open={openDelete}
-        onClose={() => setOpenDelete(false)}
-        deleteTask={handleDeleteTask}
-        taskId={task._id}
-      />
-      <EditTaskModal
-        open={openEdit}
-        onClose={() => setOpenEdit(false)}
-        editTask={editTask}
-        employeeEdit={true}
-        setTask={setTask}
+        completeTask={completeTask}
         task={task}
       />
     </div>
   )
 }
 
-export default Tasks
+export default EmployeeTasks
