@@ -75,6 +75,19 @@ export const getEmployeeTasks = createAsyncThunk(
   }
 )
 
+export const getCompletedTasks = createAsyncThunk(
+  'completed-tasks',
+  async (e, thunkAPI) => {
+    try {
+      const response = await axios.get('/task/completed-tasks')
+      if (response) return response.data
+    } catch (error) {
+      if (axios.isAxiosError(error))
+        thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
+    }
+  }
+)
+
 export const completeTask = createAsyncThunk(
   'compleate-task',
   async ({ taskId }: { taskId: string; multi?: boolean }, thunkAPI) => {
@@ -174,9 +187,6 @@ const taskSlice = createSlice({
       .addCase(getAllTasks.rejected, (state, action) => {
         state.isLoading = true
         state.isError = true
-        if (typeof action.payload == 'string') {
-          state.message = action.payload
-        }
       })
       .addCase(getEmployeeTasks.pending, (state) => {
         state.isLoading = true
@@ -189,7 +199,18 @@ const taskSlice = createSlice({
       .addCase(getEmployeeTasks.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
-        if (typeof action.payload === 'string') state.message = action.payload
+      })
+      .addCase(getCompletedTasks.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getCompletedTasks.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.allTasks = action.payload
+      })
+      .addCase(getCompletedTasks.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
       })
       .addCase(completeTask.pending, (state) => {
         state.isLoading = true

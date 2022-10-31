@@ -57,7 +57,7 @@ const assigneTask = async (req: Request, res: Response) => {
 
 //@service  PATHCH
 //@route    /api/task/:taskId
-//@desc     changes isDone entity
+//@desc     sets task to "completed"
 const compleatedTask = async (req: Request, res: Response) => {
   try {
     const { taskId } = req.params
@@ -113,6 +113,19 @@ const getUserTasks = async (req: Request, res: Response) => {
 
     const usersTasks = await Task.find({ assignedTo: userId })
     res.status(200).send(usersTasks)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+//@service  GET
+//@route    /api/task/completed-tasks
+//@desc     return only completed tasks
+const getCompletedTasks = async (req: Request, res: Response) => {
+  try {
+    console.log('Okinulo')
+    const tasks = await Task.find({ isDone: true })
+    return res.status(200).json(tasks)
   } catch (error) {
     res.status(500).json(error)
   }
@@ -179,4 +192,5 @@ export {
   getUserTasks,
   deleteTask,
   editTask,
+  getCompletedTasks,
 }

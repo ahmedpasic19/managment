@@ -17,6 +17,9 @@ const Navbar = () => {
         <Link to='/tasks' style={{ color: '#fff', marginRight: 15 }}>
           All tasks
         </Link>
+        <Link to='/completed-tasks' style={{ color: '#fff', marginRight: 15 }}>
+          Completed tasks
+        </Link>
         <Link to='/' style={{ color: '#fff', marginRight: 15 }}>
           Login
         </Link>

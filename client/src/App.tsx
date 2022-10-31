@@ -6,6 +6,7 @@ import {
   AllTasks,
   AssignTasks,
   EmployeeTasks,
+  CompletedTasks,
 } from './pages/pages'
 import Layout from './components/routes/Layout'
 import Navbar from './components/layout/Navbar'
@@ -27,6 +28,7 @@ function App() {
             <Route path='homepage' element={<HomePage />} />
             <Route path='my-tasks' element={<EmployeeTasks />} />
             <Route path='tasks' element={<AllTasks />} />
+            <Route path='completed-tasks' element={<CompletedTasks />} />
           </Route>
           {/* Requre permission */}
           <Route path='/'>
