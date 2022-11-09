@@ -1,12 +1,13 @@
 import { axiosPrivate } from '../api/axios'
 import { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { useAppSelector } from '../app/hooks'
 import { refreshToken } from '../features/auth/authSlice'
+import { useRefreshToken } from './useRefreshToken'
 
 const usePrivateRoute = () => {
   const { accessToken } = useAppSelector((state) => state.auth)
 
-  const dispatch = useAppDispatch()
+  const refresh = useRefreshToken()
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -30,17 +31,18 @@ const usePrivateRoute = () => {
 
         if (error?.response?.status === 403 && !prevReq?._retry) {
           prevReq._retry = true
-          await dispatch(refreshToken())
+          const newAccessToken = await refresh()
           return axiosPrivate({
             ...prevReq,
             headers: {
               ...prevReq.headers,
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${newAccessToken}`,
             },
             sent: true,
           })
+        } else {
+          return Promise.reject(error)
         }
-        return Promise.reject(error)
       }
     )
 

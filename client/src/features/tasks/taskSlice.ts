@@ -159,6 +159,9 @@ const taskSlice = createSlice({
     setMessage: (state, action) => {
       state.message = action.payload
     },
+    setTasks: (state, action) => {
+      state.allTasks = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -252,6 +255,11 @@ const taskSlice = createSlice({
   },
 })
 
-export const { reset, setErrorMessage, setSuccessMessage, setMessage } =
-  taskSlice.actions
+export const {
+  reset,
+  setErrorMessage,
+  setSuccessMessage,
+  setMessage,
+  setTasks,
+} = taskSlice.actions
 export default taskSlice.reducer
