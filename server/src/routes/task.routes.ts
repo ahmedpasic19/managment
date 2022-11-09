@@ -16,10 +16,10 @@ taskRouter.post('/', assigneTask)
 taskRouter.patch('/:taskId', compleatedTask)
 //GET all task
 taskRouter.get('/', getAllTasks)
-//GET tasks for user
-taskRouter.get('/:userId', getUserTasks)
 //GET completed tasks
 taskRouter.get('/completed-tasks', getCompletedTasks)
+//GET tasks for user
+taskRouter.get('/:userId', getUserTasks)
 //DELETE task
 taskRouter.delete('/:taskId', deleteTask)
 //UPDATE task

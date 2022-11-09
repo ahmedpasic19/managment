@@ -112,6 +112,9 @@ const getUserTasks = async (req: Request, res: Response) => {
     if (!userId) return res.status(400).json({ message: 'User ID required' })
 
     const usersTasks = await Task.find({ assignedTo: userId })
+
+    if (!usersTasks) return res.status(404).json({ message: 'No tasks found' })
+
     res.status(200).send(usersTasks)
   } catch (error) {
     res.status(500).json(error)
@@ -123,7 +126,6 @@ const getUserTasks = async (req: Request, res: Response) => {
 //@desc     return only completed tasks
 const getCompletedTasks = async (req: Request, res: Response) => {
   try {
-    console.log('Okinulo')
     const tasks = await Task.find({ isDone: true })
     return res.status(200).json(tasks)
   } catch (error) {

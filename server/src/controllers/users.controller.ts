@@ -182,32 +182,29 @@ const loginUser = async (req: Request, res: Response) => {
     const compare = await bcrypt.compare(password, requestedUser.password)
 
     if (!compare)
-      return res.status(203).json({ message: 'Incorrect credentials' })
+      return res.status(403).json({ message: 'Incorrect credentials' })
 
     if (compare) {
       const accessSecret = process.env.ACCES_TOKEN_SECRET || ''
       const refreshSecret = process.env.REFRESH_TOKEN_SECRET || ''
 
       const accessToken = jwt.sign({ email: email }, accessSecret, {
-        expiresIn: '30s',
+        expiresIn: '15s',
       })
       const refreshToken = jwt.sign({ email: email }, refreshSecret, {
-        expiresIn: '3m',
+        expiresIn: '1y',
       })
 
-      const loggedUser = await User.findOneAndUpdate(
-        { email },
-        { refreshToken }
-      )
       return res
         .status(200)
         .cookie('jwt', refreshToken, {
           httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000,
+          secure: true,
+          sameSite: 'none',
+          maxAge: 24 * 60 * 60 * 10000,
         })
         .json({
           message: 'Successfuly loged in',
-          user: loggedUser,
           accessToken: accessToken,
         })
     }
