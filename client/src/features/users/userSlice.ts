@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { setAccessToken } from '../auth/authSlice'
 
 const initialState = {
   user: {},
@@ -53,6 +54,7 @@ export const loginUser = createAsyncThunk(
       const response = await axios.post('/user/login', userData)
       if (response) {
         thunkAPI.dispatch(setUserSuccessMessage(response?.data.message))
+        thunkAPI.dispatch(setAccessToken(response.data.accessToken))
         return response.data
       }
     } catch (error) {
@@ -81,8 +83,10 @@ export const editUser = createAsyncThunk(
   async (userData: DBUser, thunkAPI) => {
     try {
       const response = await axios.put(`/user/${userData._id}`, userData)
-      if (response)
+      if (response) {
         thunkAPI.dispatch(setUserSuccessMessage(response.data.message))
+        thunkAPI.dispatch(getAllUsers())
+      }
     } catch (error) {
       if (axios.isAxiosError(error))
         thunkAPI.dispatch(setUserErrorMessage(error.response?.data.message))
@@ -131,7 +135,6 @@ const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.user = action.payload.user
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false
