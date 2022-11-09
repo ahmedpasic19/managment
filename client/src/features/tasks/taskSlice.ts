@@ -194,7 +194,9 @@ const taskSlice = createSlice({
       .addCase(getEmployeeTasks.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.allTasks = action.payload
+        if (action.payload) {
+          state.allTasks = action.payload
+        }
       })
       .addCase(getEmployeeTasks.rejected, (state, action) => {
         state.isLoading = false
@@ -206,7 +208,9 @@ const taskSlice = createSlice({
       .addCase(getCompletedTasks.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.allTasks = action.payload
+        if (action.payload) {
+          state.allTasks = action.payload
+        }
       })
       .addCase(getCompletedTasks.rejected, (state, action) => {
         state.isLoading = false

@@ -11,17 +11,16 @@ export const privateRoute = (
   next: NextFunction
 ) => {
   const accessToken = req.headers['authorization']
-  console.log('Access token before validation : ', accessToken)
+
   // if (accessToken instanceof Array) return
   if (accessToken) {
     const accessSecret = process.env.ACCES_TOKEN_SECRET || ''
-    console.log(accessToken.split(' '[1]))
+
     jwt.verify(
       accessToken.split(' ')[1],
       accessSecret,
       (err: any, decoded: any) => {
         if (err) {
-          console.log('Error: ', err)
           return res.sendStatus(403)
         }
         //If not expiered run next()
