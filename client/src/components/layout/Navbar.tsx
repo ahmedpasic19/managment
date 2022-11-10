@@ -1,7 +1,20 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../../app/hooks'
+import { logout } from '../../features/auth/authSlice'
 import styles from './Navbar.module.css'
+import { MouseEvent } from 'react'
 
 const Navbar = () => {
+  const dispatch = useAppDispatch()
+
+  const navigate = useNavigate()
+
+  const handleLogout = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    dispatch(logout())
+    navigate('/', { replace: true })
+  }
+
   return (
     <div className={styles.wrapper}>
       <ul>
@@ -26,6 +39,7 @@ const Navbar = () => {
         <Link to='/register' style={{ color: '#fff', marginRight: 15 }}>
           Register
         </Link>
+        <button onClick={handleLogout}>Logout</button>
       </ul>
     </div>
   )

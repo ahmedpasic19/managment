@@ -25,6 +25,16 @@ export const refreshToken = createAsyncThunk(
   }
 )
 
+export const logout = createAsyncThunk('logout', async (e, thunkAPI) => {
+  try {
+    const response = await axios.get('/logout', { withCredentials: true })
+    if (response) return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error))
+      thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
+  }
+})
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -40,18 +50,30 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(refreshToken.pending, (state) => {
-      state.isLoading = true
-    })
-    builder.addCase(refreshToken.fulfilled, (state, action) => {
-      state.isLoading = false
-      state.isSuccess = true
-      state.accessToken = action.payload
-    })
-    builder.addCase(refreshToken.rejected, (state) => {
-      state.isLoading = false
-      state.isError = true
-    })
+    builder
+      .addCase(refreshToken.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.accessToken = action.payload
+      })
+      .addCase(refreshToken.rejected, (state) => {
+        state.isLoading = false
+        state.isError = true
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+      })
+      .addCase(logout.rejected, (state) => {
+        state.isLoading = false
+        state.isError = true
+      })
   },
 })
 

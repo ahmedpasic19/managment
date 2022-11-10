@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
 import * as path from 'path'
-import { User } from '../models/user.model'
 dotenv.config({ path: path.join(__dirname, '..', '..', '.env') })
 
 export const privateRoute = (
@@ -23,6 +22,7 @@ export const privateRoute = (
         if (err) {
           return res.sendStatus(403)
         }
+
         //If not expiered run next()
         next()
       }

@@ -3,6 +3,7 @@ import ITask from '../interfaces/task.interfaces'
 import { ISelectedUser } from '../interfaces/user.interfaces'
 import { Task } from '../models/task.model'
 import { User } from '../models/user.model'
+import jwt_decode from 'jwt-decode'
 
 //@service  POST
 //@route    /api/task
@@ -58,7 +59,7 @@ const assigneTask = async (req: Request, res: Response) => {
 //@service  PATHCH
 //@route    /api/task/:taskId
 //@desc     sets task to "completed"
-const compleatedTask = async (req: Request, res: Response) => {
+const completeTask = async (req: Request, res: Response) => {
   try {
     const { taskId } = req.params
 
@@ -103,15 +104,20 @@ const getAllTasks = async (req: Request, res: Response) => {
 }
 
 //@service  GET
-//@route    /api/task/:userId
+//@route    /api/task/get-user-tasks
 //@desc     returns users tasks
 const getUserTasks = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params
+    const accessToken = req.headers['authorization']
 
-    if (!userId) return res.status(400).json({ message: 'User ID required' })
+    if (!accessToken) return res.sendStatus(403)
 
-    const usersTasks = await Task.find({ assignedTo: userId })
+    const decoded: { email: string; _id: string } = jwt_decode(accessToken)
+
+    if (!decoded._id)
+      return res.status(400).json({ message: 'User ID required' })
+
+    const usersTasks = await Task.find({ assignedTo: decoded._id })
 
     if (!usersTasks) return res.status(404).json({ message: 'No tasks found' })
 
@@ -189,7 +195,7 @@ const editTask = async (req: Request, res: Response) => {
 
 export {
   assigneTask,
-  compleatedTask,
+  completeTask,
   getAllTasks,
   getUserTasks,
   deleteTask,
