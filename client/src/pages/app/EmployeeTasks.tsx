@@ -24,13 +24,8 @@ const EmployeeTasks = () => {
 
   const privateRoute = usePrivateRoute()
 
-  //ID from local storage
-  const userId = '635eb1572f1019d89e8'
-  // const userId = false
-
   useEffect(() => {
-    if (!userId) dispatch(getAllTasks(privateRoute))
-    if (userId) dispatch(getEmployeeTasks({ privateRoute, userId }))
+    dispatch(getEmployeeTasks({ privateRoute }))
   }, [])
 
   const [openComplete, setOpenComplete] = useState(false)

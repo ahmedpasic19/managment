@@ -53,7 +53,10 @@ export const getAllTasks = createAsyncThunk(
   async (privateRoute: AxiosInstance, thunkAPI) => {
     try {
       const response = await privateRoute.get('/task')
-      if (response) return response.data
+      if (response) {
+        console.log(response.data)
+        return response.data
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
@@ -64,12 +67,9 @@ export const getAllTasks = createAsyncThunk(
 
 export const getEmployeeTasks = createAsyncThunk(
   'employee-tasks',
-  async (
-    { privateRoute, userId }: { privateRoute: AxiosInstance; userId: string },
-    thunkAPI
-  ) => {
+  async ({ privateRoute }: { privateRoute: AxiosInstance }, thunkAPI) => {
     try {
-      const response = await privateRoute.get(`/task/${userId}`)
+      const response = await privateRoute.get(`/task/get-user-tasks`)
       if (response) {
         return response.data
       }
@@ -107,9 +107,7 @@ export const completeTask = createAsyncThunk(
       const response = await privateRoute.patch(`/task/${taskId}`)
       if (response) {
         thunkAPI.dispatch(setSuccessMessage(response.data.message))
-        thunkAPI.dispatch(
-          getEmployeeTasks({ privateRoute, userId: '634599a0ed37396a3161db13' })
-        )
+        thunkAPI.dispatch(getEmployeeTasks({ privateRoute }))
       }
     } catch (error) {
       if (axios.isAxiosError(error))
@@ -134,9 +132,7 @@ export const deleteTask = createAsyncThunk(
       if (multi) {
         thunkAPI.dispatch(getAllTasks(privateRoute))
       } else {
-        thunkAPI.dispatch(
-          getEmployeeTasks({ privateRoute, userId: '634599a0ed37396a3161db13' })
-        )
+        thunkAPI.dispatch(getEmployeeTasks({ privateRoute }))
       }
     } catch (error) {
       if (axios.isAxiosError(error))
@@ -161,9 +157,7 @@ export const editTask = createAsyncThunk(
       if (multi) {
         thunkAPI.dispatch(getAllTasks(privateRoute))
       } else {
-        thunkAPI.dispatch(
-          getEmployeeTasks({ privateRoute, userId: '634599a0ed37396a3161db13' })
-        )
+        thunkAPI.dispatch(getEmployeeTasks({ privateRoute }))
       }
     } catch (error) {
       if (axios.isAxiosError(error))
@@ -214,7 +208,9 @@ const taskSlice = createSlice({
       .addCase(getAllTasks.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.allTasks = action.payload
+        if (Array.isArray(action.payload)) {
+          state.allTasks = action.payload
+        }
       })
       .addCase(getAllTasks.rejected, (state, action) => {
         state.isLoading = true
@@ -226,11 +222,11 @@ const taskSlice = createSlice({
       .addCase(getEmployeeTasks.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        if (action.payload) {
+        if (Array.isArray(action.payload)) {
           state.allTasks = action.payload
         }
       })
-      .addCase(getEmployeeTasks.rejected, (state, action) => {
+      .addCase(getEmployeeTasks.rejected, (state) => {
         state.isLoading = false
         state.isError = true
       })
@@ -240,11 +236,11 @@ const taskSlice = createSlice({
       .addCase(getCompletedTasks.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        if (action.payload) {
+        if (Array.isArray(action.payload)) {
           state.allTasks = action.payload
         }
       })
-      .addCase(getCompletedTasks.rejected, (state, action) => {
+      .addCase(getCompletedTasks.rejected, (state) => {
         state.isLoading = false
         state.isError = true
       })

@@ -188,12 +188,20 @@ const loginUser = async (req: Request, res: Response) => {
       const accessSecret = process.env.ACCES_TOKEN_SECRET || ''
       const refreshSecret = process.env.REFRESH_TOKEN_SECRET || ''
 
-      const accessToken = jwt.sign({ email: email }, accessSecret, {
-        expiresIn: '15s',
-      })
-      const refreshToken = jwt.sign({ email: email }, refreshSecret, {
-        expiresIn: '1y',
-      })
+      const accessToken = jwt.sign(
+        { _id: requestedUser._id, email: email },
+        accessSecret,
+        {
+          expiresIn: '15s',
+        }
+      )
+      const refreshToken = jwt.sign(
+        { _id: requestedUser._id, email: email },
+        refreshSecret,
+        {
+          expiresIn: '1y',
+        }
+      )
 
       return res
         .status(200)
