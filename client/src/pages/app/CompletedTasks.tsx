@@ -8,11 +8,7 @@ import {
   setErrorMessage,
   setSuccessMessage,
 } from '../../features/tasks/taskSlice'
-import {
-  deleteTask,
-  completeTask,
-  editTask,
-} from '../../features/tasks/taskSlice'
+import { editTask } from '../../features/tasks/taskSlice'
 
 //Icons
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
@@ -23,6 +19,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import CompleteTaskModal from '../../components/modals/tasks/CompleteTaskModal'
 import DeleteTaskModal from '../../components/modals/tasks/DeleteTaskModal'
 import EditTaskModal from '../../components/modals/tasks/EditTaskModal'
+import usePrivateRoute from '../../hooks/usePrivateRoute'
 
 const CompletedTasks = () => {
   const { allTasks, successMessage, errorMessage, isSuccess, isError } =
@@ -30,10 +27,12 @@ const CompletedTasks = () => {
 
   const dispatch = useAppDispatch()
 
+  const privateRoute = usePrivateRoute()
+
   useEffect(() => {
-    dispatch(getCompletedTasks())
+    dispatch(getCompletedTasks(privateRoute))
   }, [])
-  console.log(allTasks)
+
   const [openComplete, setOpenComplete] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
@@ -130,21 +129,18 @@ const CompletedTasks = () => {
       <CompleteTaskModal
         open={openComplete}
         onClose={() => setOpenComplete(false)}
-        completeTask={completeTask}
         multi={true}
         task={task}
       />
       <DeleteTaskModal
         open={openDelete}
         onClose={() => setOpenDelete(false)}
-        deleteTask={deleteTask}
         multi={true}
         taskId={task._id}
       />
       <EditTaskModal
         open={openEdit}
         onClose={() => setOpenEdit(false)}
-        editTask={editTask}
         employeeEdit={true}
         setTask={setTask}
         multi={true}

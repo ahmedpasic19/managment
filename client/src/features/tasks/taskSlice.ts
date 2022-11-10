@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 
 type Task = {
   title: string
@@ -30,9 +30,12 @@ const initialState = {
 //Assign taks
 export const assignTask = createAsyncThunk(
   'assign-task',
-  async (taskData: Task, thunkAPI) => {
+  async (
+    { privateRoute, taskData }: { privateRoute: AxiosInstance; taskData: Task },
+    thunkAPI
+  ) => {
     try {
-      const response = await axios.post('/task', taskData)
+      const response = await privateRoute.post('/task', taskData)
       if (response) {
         thunkAPI.dispatch(setSuccessMessage(response.data.message))
         return response.data
@@ -47,9 +50,9 @@ export const assignTask = createAsyncThunk(
 
 export const getAllTasks = createAsyncThunk(
   'all-tasks',
-  async (e, thunkAPI) => {
+  async (privateRoute: AxiosInstance, thunkAPI) => {
     try {
-      const response = await axios.get('/task')
+      const response = await privateRoute.get('/task')
       if (response) return response.data
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -61,9 +64,12 @@ export const getAllTasks = createAsyncThunk(
 
 export const getEmployeeTasks = createAsyncThunk(
   'employee-tasks',
-  async (userId: string, thunkAPI) => {
+  async (
+    { privateRoute, userId }: { privateRoute: AxiosInstance; userId: string },
+    thunkAPI
+  ) => {
     try {
-      const response = await axios.get(`/task/${userId}`)
+      const response = await privateRoute.get(`/task/${userId}`)
       if (response) {
         return response.data
       }
@@ -77,9 +83,9 @@ export const getEmployeeTasks = createAsyncThunk(
 
 export const getCompletedTasks = createAsyncThunk(
   'completed-tasks',
-  async (e, thunkAPI) => {
+  async (privateRoute: AxiosInstance, thunkAPI) => {
     try {
-      const response = await axios.get('/task/completed-tasks')
+      const response = await privateRoute.get('/task/completed-tasks')
       if (response) return response.data
     } catch (error) {
       if (axios.isAxiosError(error))
@@ -90,12 +96,20 @@ export const getCompletedTasks = createAsyncThunk(
 
 export const completeTask = createAsyncThunk(
   'compleate-task',
-  async ({ taskId }: { taskId: string; multi?: boolean }, thunkAPI) => {
+  async (
+    {
+      privateRoute,
+      taskId,
+    }: { privateRoute: AxiosInstance; taskId: string; multi?: boolean },
+    thunkAPI
+  ) => {
     try {
-      const response = await axios.patch(`/task/${taskId}`)
+      const response = await privateRoute.patch(`/task/${taskId}`)
       if (response) {
         thunkAPI.dispatch(setSuccessMessage(response.data.message))
-        thunkAPI.dispatch(getEmployeeTasks('634599a0ed37396a3161db13'))
+        thunkAPI.dispatch(
+          getEmployeeTasks({ privateRoute, userId: '634599a0ed37396a3161db13' })
+        )
       }
     } catch (error) {
       if (axios.isAxiosError(error))
@@ -106,14 +120,23 @@ export const completeTask = createAsyncThunk(
 
 export const deleteTask = createAsyncThunk(
   'delete-task',
-  async ({ taskId, multi }: { taskId: string; multi?: boolean }, thunkAPI) => {
+  async (
+    {
+      privateRoute,
+      taskId,
+      multi,
+    }: { privateRoute: AxiosInstance; taskId: string; multi?: boolean },
+    thunkAPI
+  ) => {
     try {
-      const response = await axios.delete(`/task/${taskId}`)
+      const response = await privateRoute.delete(`/task/${taskId}`)
       if (response) thunkAPI.dispatch(setSuccessMessage(response.data.message))
       if (multi) {
-        thunkAPI.dispatch(getAllTasks())
+        thunkAPI.dispatch(getAllTasks(privateRoute))
       } else {
-        thunkAPI.dispatch(getEmployeeTasks('634599a0ed37396a3161db13'))
+        thunkAPI.dispatch(
+          getEmployeeTasks({ privateRoute, userId: '634599a0ed37396a3161db13' })
+        )
       }
     } catch (error) {
       if (axios.isAxiosError(error))
@@ -125,16 +148,22 @@ export const deleteTask = createAsyncThunk(
 export const editTask = createAsyncThunk(
   'edit-task',
   async (
-    { taskData, multi }: { taskData: DBTask; multi?: boolean },
+    {
+      privateRoute,
+      taskData,
+      multi,
+    }: { privateRoute: AxiosInstance; taskData: DBTask; multi?: boolean },
     thunkAPI
   ) => {
     try {
-      const response = await axios.put(`/task/${taskData._id}`, taskData)
+      const response = await privateRoute.put(`/task/${taskData._id}`, taskData)
       if (response) thunkAPI.dispatch(setSuccessMessage(response.data.message))
       if (multi) {
-        thunkAPI.dispatch(getAllTasks())
+        thunkAPI.dispatch(getAllTasks(privateRoute))
       } else {
-        thunkAPI.dispatch(getEmployeeTasks('634599a0ed37396a3161db13'))
+        thunkAPI.dispatch(
+          getEmployeeTasks({ privateRoute, userId: '634599a0ed37396a3161db13' })
+        )
       }
     } catch (error) {
       if (axios.isAxiosError(error))

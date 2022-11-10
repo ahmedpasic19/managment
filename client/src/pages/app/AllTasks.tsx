@@ -1,17 +1,12 @@
 import MaterialTable from 'material-table'
 import { useEffect, useState, MouseEvent } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { DBTask } from '../../features/tasks/taskSlice'
+import { DBTask, setTasks } from '../../features/tasks/taskSlice'
 import { toast, ToastContainer } from 'react-toastify'
 import {
   getAllTasks,
   setErrorMessage,
   setSuccessMessage,
-} from '../../features/tasks/taskSlice'
-import {
-  deleteTask,
-  completeTask,
-  editTask,
 } from '../../features/tasks/taskSlice'
 
 //Icons
@@ -23,21 +18,30 @@ import CheckIcon from '@mui/icons-material/Check'
 import CompleteTaskModal from '../../components/modals/tasks/CompleteTaskModal'
 import DeleteTaskModal from '../../components/modals/tasks/DeleteTaskModal'
 import EditTaskModal from '../../components/modals/tasks/EditTaskModal'
+import { DBUser, getAllUsers } from '../../features/users/userSlice'
+import usePrivateRoute from '../../hooks/usePrivateRoute'
+import axios from 'axios'
 
 const AllTasks = () => {
   const { allTasks, successMessage, errorMessage, isSuccess, isError } =
     useAppSelector((state) => state.tasks)
 
+  const { users } = useAppSelector((state) => state.users)
+
   const dispatch = useAppDispatch()
 
+  const privateRoute = usePrivateRoute()
+
   useEffect(() => {
-    dispatch(getAllTasks())
+    dispatch(getAllTasks(privateRoute))
+    dispatch(getAllUsers())
   }, [])
 
   const [openComplete, setOpenComplete] = useState(false)
   const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [task, setTask] = useState({} as DBTask)
+  const [employees, setEmployees] = useState([] as DBUser[])
 
   const columns = [
     { title: 'Title', field: 'title' },
@@ -131,23 +135,21 @@ const AllTasks = () => {
       <CompleteTaskModal
         open={openComplete}
         onClose={() => setOpenComplete(false)}
-        completeTask={completeTask}
         multi={true}
         task={task}
       />
       <DeleteTaskModal
         open={openDelete}
         onClose={() => setOpenDelete(false)}
-        deleteTask={deleteTask}
         multi={true}
         taskId={task._id}
       />
       <EditTaskModal
         open={openEdit}
         onClose={() => setOpenEdit(false)}
-        editTask={editTask}
         employeeEdit={true}
         setTask={setTask}
+        employees={employees}
         multi={true}
         task={task}
       />

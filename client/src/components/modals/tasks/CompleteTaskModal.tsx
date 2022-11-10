@@ -1,39 +1,32 @@
 import ReactDOM from 'react-dom'
 import styles from './AssignTaskModal.module.css'
-import { DBTask } from '../../../features/tasks/taskSlice'
+import { completeTask, DBTask } from '../../../features/tasks/taskSlice'
 import { MouseEvent } from 'react'
 import { useAppDispatch } from '../../../app/hooks'
 import { AsyncThunk } from '@reduxjs/toolkit'
+import usePrivateRoute from '../../../hooks/usePrivateRoute'
+import { AxiosInstance } from 'axios'
 
 type Props = {
   open: boolean
   multi?: boolean
   onClose: () => void
-  completeTask: AsyncThunk<
-    void,
-    { taskId: string; multi?: boolean | undefined },
-    {}
-  >
   task: DBTask
 }
 
-const CompleteTaskModal = ({
-  open,
-  onClose,
-  task,
-  completeTask,
-  multi,
-}: Props) => {
+const CompleteTaskModal = ({ open, onClose, task, multi }: Props) => {
   const dispatch = useAppDispatch()
+
+  const privateRoute = usePrivateRoute()
 
   if (!open) return null
 
   const submit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (multi) {
-      dispatch(completeTask({ taskId: task._id, multi }))
+      dispatch(completeTask({ privateRoute, taskId: task._id, multi }))
     } else {
-      dispatch(completeTask({ taskId: task._id }))
+      dispatch(completeTask({ privateRoute, taskId: task._id }))
     }
   }
 

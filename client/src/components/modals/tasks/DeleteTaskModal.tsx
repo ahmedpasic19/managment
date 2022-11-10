@@ -3,36 +3,29 @@ import styles from './AssignTaskModal.module.css'
 import { MouseEvent } from 'react'
 import { AsyncThunk } from '@reduxjs/toolkit'
 import { useAppDispatch } from '../../../app/hooks'
+import usePrivateRoute from '../../../hooks/usePrivateRoute'
+import { deleteTask } from '../../../features/tasks/taskSlice'
 
 type Props = {
   open: boolean
   onClose: () => void
   taskId: string
   multi?: boolean
-  deleteTask: AsyncThunk<
-    void,
-    { taskId: string; multi?: boolean | undefined },
-    {}
-  >
 }
 
-const DeleteTaskModal = ({
-  open,
-  onClose,
-  taskId,
-  deleteTask,
-  multi,
-}: Props) => {
+const DeleteTaskModal = ({ open, onClose, taskId, multi }: Props) => {
   const dispatch = useAppDispatch()
+
+  const privateRoute = usePrivateRoute()
 
   if (!open) return null
 
   const submit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (multi) {
-      dispatch(deleteTask({ taskId, multi }))
+      dispatch(deleteTask({ privateRoute, taskId, multi }))
     } else {
-      dispatch(deleteTask({ taskId }))
+      dispatch(deleteTask({ privateRoute, taskId }))
     }
   }
 

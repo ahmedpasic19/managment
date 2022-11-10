@@ -5,16 +5,16 @@ import {
   setErrorMessage,
   setSuccessMessage,
 } from '../../features/tasks/taskSlice'
-import { useEffect, useState, MouseEvent } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { DBTask } from '../../features/tasks/taskSlice'
-import { completeTask } from '../../features/tasks/taskSlice'
 import { toast, ToastContainer } from 'react-toastify'
 
 //Icons
 import CheckIcon from '@mui/icons-material/Check'
 //Modals
 import CompleteTaskModal from '../../components/modals/tasks/CompleteTaskModal'
+import usePrivateRoute from '../../hooks/usePrivateRoute'
 
 const EmployeeTasks = () => {
   const { allTasks, successMessage, errorMessage, isSuccess, isError } =
@@ -22,13 +22,15 @@ const EmployeeTasks = () => {
 
   const dispatch = useAppDispatch()
 
+  const privateRoute = usePrivateRoute()
+
   //ID from local storage
-  const userId = '635eb1572f1019d89eccbba8'
+  const userId = '635eb1572f1019d89e8'
   // const userId = false
 
   useEffect(() => {
-    if (!userId) dispatch(getAllTasks())
-    if (userId) dispatch(getEmployeeTasks(userId))
+    if (!userId) dispatch(getAllTasks(privateRoute))
+    if (userId) dispatch(getEmployeeTasks({ privateRoute, userId }))
   }, [])
 
   const [openComplete, setOpenComplete] = useState(false)
@@ -103,7 +105,6 @@ const EmployeeTasks = () => {
       <CompleteTaskModal
         open={openComplete}
         onClose={() => setOpenComplete(false)}
-        completeTask={completeTask}
         task={task}
       />
     </div>

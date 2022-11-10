@@ -1,10 +1,11 @@
 import ReactDOM from 'react-dom'
 import { ChangeEvent, MouseEvent } from 'react'
 import styles from './AssignTaskModal.module.css'
-import { AsyncThunk } from '@reduxjs/toolkit'
 import { DBUser } from '../../../features/users/userSlice'
 import { useAppDispatch } from '../../../app/hooks'
 import { toast } from 'react-toastify'
+import usePrivateRoute from '../../../hooks/usePrivateRoute'
+import { assignTask } from '../../../features/tasks/taskSlice'
 
 type Task = {
   title: string
@@ -20,7 +21,6 @@ type Props = {
   onClose: () => void
   newTask: Task
   setNewTask: (value: Task) => void
-  assignTask: AsyncThunk<any, Task, {}>
   user: DBUser
 }
 
@@ -29,10 +29,11 @@ const AssignTskModal = ({
   onClose,
   newTask,
   setNewTask,
-  assignTask,
   user,
 }: Props) => {
   const dispatch = useAppDispatch()
+
+  const privateRoute = usePrivateRoute()
 
   if (!open) return null
 
@@ -61,10 +62,13 @@ const AssignTskModal = ({
     if (keys)
       dispatch(
         assignTask({
-          ...newTask,
-          assignedAt: '12:00',
-          assignedTo: user._id,
-          username: user.firstName,
+          privateRoute,
+          taskData: {
+            ...newTask,
+            assignedAt: '12:00',
+            assignedTo: user._id,
+            username: user.firstName,
+          },
         })
       )
   }
