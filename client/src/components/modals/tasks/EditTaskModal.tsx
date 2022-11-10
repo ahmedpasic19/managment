@@ -1,21 +1,18 @@
 import ReactDOM from 'react-dom'
 import styles from './AssignTaskModal.module.css'
 import { ChangeEvent, MouseEvent } from 'react'
-import { DBTask } from '../../../features/tasks/taskSlice'
-import { AsyncThunk } from '@reduxjs/toolkit'
+import { DBTask, editTask } from '../../../features/tasks/taskSlice'
 import { useAppDispatch } from '../../../app/hooks'
+import { DBUser } from '../../../features/users/userSlice'
+import usePrivateRoute from '../../../hooks/usePrivateRoute'
 
 type Props = {
   open: boolean
   onClose: () => void
   task: DBTask
-  editTask: AsyncThunk<
-    void,
-    { taskData: DBTask; multi?: boolean | undefined },
-    {}
-  >
   setTask: (value: DBTask) => void
   employeeEdit?: boolean | string
+  employees?: DBUser[]
   multi?: boolean
 }
 
@@ -24,11 +21,12 @@ const EditTaskModal = ({
   onClose,
   task,
   employeeEdit,
-  editTask,
   setTask,
   multi,
 }: Props) => {
   const dispatch = useAppDispatch()
+
+  const privateRoute = usePrivateRoute()
 
   if (!open) return null
 
@@ -46,9 +44,9 @@ const EditTaskModal = ({
       task.compleatedAt !== ''
     )
       if (multi) {
-        dispatch(editTask({ taskData: task, multi }))
+        dispatch(editTask({ privateRoute, taskData: task, multi }))
       } else {
-        dispatch(editTask({ taskData: task }))
+        dispatch(editTask({ privateRoute, taskData: task }))
       }
   }
 
