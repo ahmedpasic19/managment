@@ -84,6 +84,7 @@ export const editUser = createAsyncThunk(
     try {
       const response = await axios.put(`/user/${userData._id}`, userData)
       if (response) {
+        console.log(response.data)
         thunkAPI.dispatch(setUserSuccessMessage(response.data.message))
         thunkAPI.dispatch(getAllUsers())
       }
@@ -113,8 +114,9 @@ const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    reset: (state) => {
-      state = initialState
+    resetUsers: (state) => {
+      state.user = {}
+      state.users = []
     },
     setUserErrorMessage: (state, action) => {
       state.usersErrorMessage = action.payload
@@ -208,6 +210,10 @@ const userSlice = createSlice({
   },
 })
 
-export const { reset, setUserErrorMessage, setUserSuccessMessage, setMessage } =
-  userSlice.actions
+export const {
+  resetUsers,
+  setUserErrorMessage,
+  setUserSuccessMessage,
+  setMessage,
+} = userSlice.actions
 export default userSlice.reducer

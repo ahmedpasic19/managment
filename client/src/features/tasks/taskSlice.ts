@@ -71,6 +71,7 @@ export const getEmployeeTasks = createAsyncThunk(
     try {
       const response = await privateRoute.get(`/task/get-user-tasks`)
       if (response) {
+        console.log(response.data)
         return response.data
       }
     } catch (error) {
@@ -170,8 +171,8 @@ const taskSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    reset: (state) => {
-      state = initialState
+    resetTasks: (state) => {
+      state.allTasks = []
     },
     setErrorMessage: (state, action) => {
       state.errorMessage = action.payload
@@ -281,7 +282,7 @@ const taskSlice = createSlice({
 })
 
 export const {
-  reset,
+  resetTasks,
   setErrorMessage,
   setSuccessMessage,
   setMessage,

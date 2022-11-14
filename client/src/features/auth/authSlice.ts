@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { DBUser } from '../users/userSlice'
+import { resetTasks } from '../tasks/taskSlice'
+import { DBUser, resetUsers } from '../users/userSlice'
 
 const initialState = {
   refreshToken: '',
@@ -28,7 +29,12 @@ export const refreshToken = createAsyncThunk(
 export const logout = createAsyncThunk('logout', async (e, thunkAPI) => {
   try {
     const response = await axios.get('/logout', { withCredentials: true })
-    if (response) return response.data
+    if (response) {
+      thunkAPI.dispatch(resetUsers())
+      thunkAPI.dispatch(resetTasks())
+      thunkAPI.dispatch(resetAuth())
+      return response.data
+    }
   } catch (error) {
     if (axios.isAxiosError(error))
       thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
@@ -39,8 +45,9 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: (state) => {
-      state = initialState
+    resetAuth: (state) => {
+      state.refreshToken = ''
+      state.accessToken = ''
     },
     setErrorMessage: (state, action) => {
       state.errorMessage = action.payload
@@ -77,5 +84,5 @@ const authSlice = createSlice({
   },
 })
 
-export const { reset, setErrorMessage, setAccessToken } = authSlice.actions
+export const { resetAuth, setErrorMessage, setAccessToken } = authSlice.actions
 export default authSlice.reducer
