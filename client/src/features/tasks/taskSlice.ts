@@ -54,7 +54,6 @@ export const getAllTasks = createAsyncThunk(
     try {
       const response = await privateRoute.get('/task')
       if (response) {
-        console.log(response.data)
         return response.data
       }
     } catch (error) {
@@ -71,7 +70,6 @@ export const getEmployeeTasks = createAsyncThunk(
     try {
       const response = await privateRoute.get(`/task/get-user-tasks`)
       if (response) {
-        console.log(response.data)
         return response.data
       }
     } catch (error) {

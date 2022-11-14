@@ -3,10 +3,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   DBUser,
   getAllUsers,
-  deleteUser,
   setUserErrorMessage,
   setUserSuccessMessage,
-  editUser,
 } from '../../features/users/userSlice'
 import {
   setErrorMessage,
@@ -24,6 +22,7 @@ import DeleteOutline from '@material-ui/icons/DeleteOutline'
 import Edit from '@material-ui/icons/Edit'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import EditUserModal from '../../components/modals/users/EditUserModal'
+import usePrivateRoute from '../../hooks/usePrivateRoute'
 
 type Task = {
   title: string
@@ -45,8 +44,10 @@ const AllEmployees = () => {
 
   const dispatch = useAppDispatch()
 
+  const privateRoute = usePrivateRoute()
+
   useEffect(() => {
-    dispatch(getAllUsers())
+    dispatch(getAllUsers(privateRoute))
   }, [])
 
   const [openDelete, setOpenDelete] = useState(false)
@@ -176,13 +177,11 @@ const AllEmployees = () => {
         open={openDelete}
         onClose={() => setOpenDelete(false)}
         userId={user._id}
-        deleteUser={deleteUser}
       />
       <EditUserModal
         open={openEdit}
         onClose={() => setOpenEdit(false)}
         user={user}
-        editUser={editUser}
         setUser={setUser}
       />
       <ToastContainer />

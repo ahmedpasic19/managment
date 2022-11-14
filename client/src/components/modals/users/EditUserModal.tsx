@@ -1,21 +1,22 @@
 import ReactDOM from 'react-dom'
 import styles from './AssignTaskModal.module.css'
 import { ChangeEvent, MouseEvent } from 'react'
-import { AsyncThunk } from '@reduxjs/toolkit'
 import { useAppDispatch } from '../../../app/hooks'
-import { DBUser } from '../../../features/users/userSlice'
+import { DBUser, editUser } from '../../../features/users/userSlice'
 import { toast } from 'react-toastify'
+import usePrivateRoute from '../../../hooks/usePrivateRoute'
 
 type Props = {
   open: boolean
   onClose: () => void
   user: DBUser
-  editUser: AsyncThunk<void, DBUser, {}>
   setUser: (value: DBUser) => void
 }
 
-const EditUserModal = ({ open, onClose, user, editUser, setUser }: Props) => {
+const EditUserModal = ({ open, onClose, user, setUser }: Props) => {
   const dispatch = useAppDispatch()
+
+  const privateRoute = usePrivateRoute()
 
   if (!open) return null
 
@@ -36,7 +37,7 @@ const EditUserModal = ({ open, onClose, user, editUser, setUser }: Props) => {
   const submit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (user.password?.length < 8) return shortPassword()
-    dispatch(editUser(user))
+    dispatch(editUser({ userData: user, privateRoute }))
   }
 
   return ReactDOM.createPortal(

@@ -1,24 +1,26 @@
 import ReactDOM from 'react-dom'
 import styles from './AssignTaskModal.module.css'
 import { MouseEvent } from 'react'
-import { AsyncThunk } from '@reduxjs/toolkit'
 import { useAppDispatch } from '../../../app/hooks'
+import usePrivateRoute from '../../../hooks/usePrivateRoute'
+import { deleteUser } from '../../../features/users/userSlice'
 
 type Props = {
   open: boolean
   onClose: () => void
   userId: string
-  deleteUser: AsyncThunk<void, string, {}>
 }
 
-const DeleteUserModal = ({ open, onClose, userId, deleteUser }: Props) => {
+const DeleteUserModal = ({ open, onClose, userId }: Props) => {
   const dispatch = useAppDispatch()
+
+  const privateRoute = usePrivateRoute()
 
   if (!open) return null
 
   const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    dispatch(deleteUser(userId))
+    dispatch(deleteUser({ userId, privateRoute }))
   }
 
   return ReactDOM.createPortal(

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { setAccessToken } from '../auth/authSlice'
 
 const initialState = {
@@ -65,27 +65,36 @@ export const loginUser = createAsyncThunk(
   }
 )
 
-export const getAllUsers = createAsyncThunk('get-all-users', async () => {
-  try {
-    const response = await axios.get('/user')
-    if (response) {
-      return response.data
-    }
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      setUserErrorMessage(error.response?.data.message)
+export const getAllUsers = createAsyncThunk(
+  'get-all-users',
+  async (privateRoute: AxiosInstance) => {
+    try {
+      const response = await privateRoute.get('/user')
+      if (response) {
+        return response.data
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setUserErrorMessage(error.response?.data.message)
+      }
     }
   }
-})
+)
 
 export const editUser = createAsyncThunk(
   'edit-user',
-  async (userData: DBUser, thunkAPI) => {
+  async (
+    {
+      userData,
+      privateRoute,
+    }: { userData: DBUser; privateRoute: AxiosInstance },
+    thunkAPI
+  ) => {
     try {
-      const response = await axios.put(`/user/${userData._id}`, userData)
+      const response = await privateRoute.put(`/user/${userData._id}`, userData)
       if (response) {
         thunkAPI.dispatch(setUserSuccessMessage(response.data.message))
-        thunkAPI.dispatch(getAllUsers())
+        thunkAPI.dispatch(getAllUsers(privateRoute))
       }
     } catch (error) {
       if (axios.isAxiosError(error))
@@ -96,12 +105,15 @@ export const editUser = createAsyncThunk(
 
 export const deleteUser = createAsyncThunk(
   'delete-task',
-  async (userId: string, thunkAPI) => {
+  async (
+    { userId, privateRoute }: { userId: string; privateRoute: AxiosInstance },
+    thunkAPI
+  ) => {
     try {
-      const response = await axios.delete(`/user/${userId}`)
+      const response = await privateRoute.delete(`/user/${userId}`)
       if (response)
         thunkAPI.dispatch(setUserSuccessMessage(response.data.message))
-      thunkAPI.dispatch(getAllUsers())
+      thunkAPI.dispatch(getAllUsers(privateRoute))
     } catch (error) {
       if (axios.isAxiosError(error))
         thunkAPI.dispatch(setUserErrorMessage(error.response?.data.message))

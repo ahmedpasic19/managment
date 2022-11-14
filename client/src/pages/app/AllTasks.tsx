@@ -20,7 +20,6 @@ import DeleteTaskModal from '../../components/modals/tasks/DeleteTaskModal'
 import EditTaskModal from '../../components/modals/tasks/EditTaskModal'
 import { DBUser, getAllUsers } from '../../features/users/userSlice'
 import usePrivateRoute from '../../hooks/usePrivateRoute'
-import axios from 'axios'
 
 const AllTasks = () => {
   const { allTasks, successMessage, errorMessage, isSuccess, isError } =
@@ -34,7 +33,7 @@ const AllTasks = () => {
 
   useEffect(() => {
     dispatch(getAllTasks(privateRoute))
-    dispatch(getAllUsers())
+    dispatch(getAllUsers(privateRoute))
   }, [])
 
   const [openComplete, setOpenComplete] = useState(false)
