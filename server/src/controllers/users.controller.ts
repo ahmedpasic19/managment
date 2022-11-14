@@ -127,7 +127,7 @@ const updateUser = async (req: Request, res: Response) => {
     if (!selectedUser)
       return res.status(404).json({ message: 'User not found' })
 
-    const compare = await bcrypt.compare(password, selectedUser.password)
+    const compare = password === selectedUser.password
 
     if (compare) {
       const updatedUser = {
@@ -138,7 +138,7 @@ const updateUser = async (req: Request, res: Response) => {
         phoneNumber,
       }
 
-      await User.findOneAndUpdate({ email }, updatedUser)
+      await User.findOneAndUpdate({ _id: userId }, updatedUser)
       res
         .status(200)
         .json({ message: 'User successfuly updated', user: updatedUser })
@@ -154,7 +154,8 @@ const updateUser = async (req: Request, res: Response) => {
             password: hash,
             phoneNumber,
           }
-          await User.findOneAndUpdate({ email }, updatedUser)
+
+          await User.findOneAndUpdate({ _id: userId }, updatedUser)
           res.status(200).json({
             message: 'User successfuly updated with new password',
             user: updatedUser,

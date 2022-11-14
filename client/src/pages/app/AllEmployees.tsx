@@ -6,9 +6,9 @@ import {
   deleteUser,
   setUserErrorMessage,
   setUserSuccessMessage,
+  editUser,
 } from '../../features/users/userSlice'
 import {
-  assignTask,
   setErrorMessage,
   setSuccessMessage,
 } from '../../features/tasks/taskSlice'
@@ -23,6 +23,7 @@ import DeleteUserModal from '../../components/modals/users/DeleteUserModal'
 import DeleteOutline from '@material-ui/icons/DeleteOutline'
 import Edit from '@material-ui/icons/Edit'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+import EditUserModal from '../../components/modals/users/EditUserModal'
 
 type Task = {
   title: string
@@ -33,7 +34,7 @@ type Task = {
   username: string
 }
 
-const AssignTasks = () => {
+const AllEmployees = () => {
   const { users, usersSuccessMessage, usersErrorMessage } = useAppSelector(
     (state) => state.users
   )
@@ -50,6 +51,7 @@ const AssignTasks = () => {
 
   const [openDelete, setOpenDelete] = useState(false)
   const [openAssign, setOpenAssign] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
   const [newTask, setNewTask] = useState({} as Task)
   const [user, setUser] = useState({} as DBUser)
 
@@ -90,10 +92,11 @@ const AssignTasks = () => {
       dispatch(setUserErrorMessage(''))
     }
     if (usersSuccessMessage) {
-      success(usersErrorMessage)
-      dispatch(setUserSuccessMessage(''))
+      success(usersSuccessMessage)
       setOpenDelete(false)
       setOpenAssign(false)
+      setOpenEdit(false)
+      dispatch(setUserSuccessMessage(''))
     }
   }, [usersErrorMessage, usersSuccessMessage])
 
@@ -113,24 +116,13 @@ const AssignTasks = () => {
   return (
     <div style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ToastContainer />
-      <h1>Assign task</h1>
+      <h1>All employees</h1>
       <div style={{ width: '80%' }}>
         <MaterialTable
           columns={columns}
           title='All employees'
           data={userData}
           actions={[
-            {
-              icon: () => <DeleteOutline />,
-              tooltip: 'Delete user',
-              onClick: (event, rowData) => {
-                if (rowData instanceof Array) return
-                if (rowData) {
-                  setUser(rowData)
-                  setOpenDelete(true)
-                }
-              },
-            },
             {
               icon: () => <AssignmentIcon />,
               tooltip: 'Assign new task',
@@ -139,6 +131,28 @@ const AssignTasks = () => {
                 if (rowData) {
                   setUser(rowData)
                   setOpenAssign(true)
+                }
+              },
+            },
+            {
+              icon: () => <Edit />,
+              tooltip: 'Edit user',
+              onClick: (event, rowData) => {
+                if (rowData instanceof Array) return
+                if (rowData) {
+                  setUser(rowData)
+                  setOpenEdit(true)
+                }
+              },
+            },
+            {
+              icon: () => <DeleteOutline />,
+              tooltip: 'Delete user',
+              onClick: (event, rowData) => {
+                if (rowData instanceof Array) return
+                if (rowData) {
+                  setUser(rowData)
+                  setOpenDelete(true)
                 }
               },
             },
@@ -157,7 +171,6 @@ const AssignTasks = () => {
         user={user}
         newTask={newTask}
         setNewTask={setNewTask}
-        assignTask={assignTask}
       />
       <DeleteUserModal
         open={openDelete}
@@ -165,9 +178,16 @@ const AssignTasks = () => {
         userId={user._id}
         deleteUser={deleteUser}
       />
+      <EditUserModal
+        open={openEdit}
+        onClose={() => setOpenEdit(false)}
+        user={user}
+        editUser={editUser}
+        setUser={setUser}
+      />
       <ToastContainer />
     </div>
   )
 }
 
-export default AssignTasks
+export default AllEmployees

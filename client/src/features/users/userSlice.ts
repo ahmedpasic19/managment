@@ -84,7 +84,6 @@ export const editUser = createAsyncThunk(
     try {
       const response = await axios.put(`/user/${userData._id}`, userData)
       if (response) {
-        console.log(response.data)
         thunkAPI.dispatch(setUserSuccessMessage(response.data.message))
         thunkAPI.dispatch(getAllUsers())
       }
