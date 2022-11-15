@@ -55,7 +55,6 @@ const Login = () => {
       success(successMessage)
       dispatch(setSuccessMessage(''))
       setUserData({} as User)
-      console.log('/homepage')
       navigate('/homepage', { replace: true })
       return
     }

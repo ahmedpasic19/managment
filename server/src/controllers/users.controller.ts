@@ -50,7 +50,7 @@ const createUser = async (req: Request, res: Response) => {
 
     bcrypt.hash(password, 10, (error: any, hash: string) => {
       if (error) {
-        return res.send(400).json({ message: 'Connection error' })
+        return res.sendStatus(400)
       } else {
         const newUser = new User({
           email,
