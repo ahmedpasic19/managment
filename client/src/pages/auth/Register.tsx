@@ -28,7 +28,7 @@ const Register = () => {
   //Options for react-select
   const options = [
     { value: 'employee', label: 'Employee' },
-    { value: 'customer', label: 'Customer' },
+    { value: 'admin', label: 'Admin' },
   ]
 
   //Toast's

@@ -6,17 +6,17 @@ import {
   updateUser,
   loginUser,
 } from '../controllers/users.controller'
-import { privateRoute } from '../middleware/auth.middleware'
+import { adminRoute } from '../middleware/auth.middleware'
 const userRouter = express.Router()
 
 //POST User
-userRouter.post('/', createUser)
+userRouter.post('/', adminRoute, createUser)
 //DELETE User
-userRouter.delete('/:userId', privateRoute, deleteUser)
+userRouter.delete('/:userId', adminRoute, deleteUser)
 //UPDATE User
-userRouter.put('/:userId', privateRoute, updateUser)
+userRouter.put('/:userId', adminRoute, updateUser)
 //GET all Users
-userRouter.get('/', privateRoute, getAllUsers)
+userRouter.get('/', adminRoute, getAllUsers)
 //Login
 userRouter.post('/login', loginUser)
 

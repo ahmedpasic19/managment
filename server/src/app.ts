@@ -4,7 +4,6 @@ import * as path from 'path'
 import connectDB from './config/db'
 import userRouter from './routes/users.routes'
 import logoutRoute from './routes/logout.routes'
-import { privateRoute } from './middleware/auth.middleware'
 import { refreshRouter } from './routes/refresh.routes'
 import { taskRouter } from './routes/task.routes'
 import { options } from './config/corsOptions'
@@ -27,7 +26,7 @@ connectDB()
 app.use('/api/user', userRouter)
 app.use('/api/logout', logoutRoute)
 app.use('/api/refresh', refreshRouter)
-app.use('/api/task', privateRoute, taskRouter)
+app.use('/api/task', taskRouter)
 
 app.listen(PORT, () =>
   console.log('Running on port: ', PORT, 'Process id: ', process.pid)
