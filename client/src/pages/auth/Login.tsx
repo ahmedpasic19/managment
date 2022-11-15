@@ -3,12 +3,11 @@ import { FormEvent, useState, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import styles from './Login.module.css'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { loginUser } from '../../features/users/userSlice'
+import { loginUser } from '../../features/auth/authSlice'
 import {
-  setUserSuccessMessage,
-  setUserErrorMessage,
-  setMessage,
-} from '../../features/users/userSlice'
+  setSuccessMessage,
+  setErrorMessage,
+} from '../../features/auth/authSlice'
 
 type User = {
   email: string
@@ -17,15 +16,9 @@ type User = {
 const Login = () => {
   const [userData, setUserData] = useState<User>({} as User)
 
-  const {
-    isError,
-    isLoading,
-    isSuccess,
-    user,
-    message,
-    usersSuccessMessage,
-    usersErrorMessage,
-  } = useAppSelector((state) => state.users)
+  const { successMessage, errorMessage, isSuccess, isError } = useAppSelector(
+    (state) => state.auth
+  )
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -58,24 +51,20 @@ const Login = () => {
 
   useEffect(() => {
     //Toastify alerts
-    if (isError && message) {
-      error(message)
-      dispatch(setMessage(''))
-      return
-    }
-    if (usersSuccessMessage) {
-      success(usersSuccessMessage)
-      dispatch(setUserSuccessMessage(''))
+    if (successMessage) {
+      success(successMessage)
+      dispatch(setSuccessMessage(''))
       setUserData({} as User)
-      navigate('/homepage')
+      console.log('/homepage')
+      navigate('/homepage', { replace: true })
       return
     }
-    if (usersErrorMessage) {
-      error(usersErrorMessage)
-      dispatch(setUserErrorMessage(''))
+    if (errorMessage) {
+      error(errorMessage)
+      dispatch(setErrorMessage(''))
       return
     }
-  }, [isError, isSuccess, message, usersSuccessMessage, usersErrorMessage])
+  }, [isError, isSuccess, successMessage, setErrorMessage])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value

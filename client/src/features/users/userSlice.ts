@@ -25,11 +25,6 @@ type User = {
 
 export type DBUser = User & { _id: string }
 
-type LoginUser = {
-  email: string
-  password: string
-}
-
 export const registerUser = createAsyncThunk(
   'create-user',
   async (userData: User, thunkAPI) => {
@@ -37,24 +32,6 @@ export const registerUser = createAsyncThunk(
       const response = await axios.post('/user', userData)
       if (response) {
         thunkAPI.dispatch(setUserSuccessMessage(response?.data.message))
-        return response.data
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        thunkAPI.dispatch(setUserErrorMessage(error.response?.data.message))
-      }
-    }
-  }
-)
-
-export const loginUser = createAsyncThunk(
-  'login-user',
-  async (userData: LoginUser, thunkAPI) => {
-    try {
-      const response = await axios.post('/user/login', userData)
-      if (response) {
-        thunkAPI.dispatch(setUserSuccessMessage(response?.data.message))
-        thunkAPI.dispatch(setAccessToken(response.data.accessToken))
         return response.data
       }
     } catch (error) {
@@ -152,26 +129,6 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false
         state.isSuccess = false
-        state.isError = true
-        if (typeof action.payload === 'string') {
-          state.message = action.payload
-        }
-      })
-      //Login
-      .addCase(loginUser.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.isSuccess = true
-        state.isError = false
-        state.user = action.payload.user
-        if (typeof action.payload === 'string') {
-          state.message = action.payload
-        }
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false
         state.isError = true
         if (typeof action.payload === 'string') {
           state.message = action.payload

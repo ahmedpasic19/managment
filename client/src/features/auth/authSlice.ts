@@ -11,6 +11,14 @@ const initialState = {
   isSuccess: false,
   isError: false,
   errorMessage: '',
+  successMessage: '',
+  message: '',
+  userType: '',
+}
+
+type LoginUser = {
+  email: string
+  password: string
 }
 
 export const refreshToken = createAsyncThunk(
@@ -22,6 +30,24 @@ export const refreshToken = createAsyncThunk(
     } catch (error) {
       if (axios.isAxiosError(error))
         thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
+    }
+  }
+)
+
+export const loginUser = createAsyncThunk(
+  'login-user',
+  async (userData: LoginUser, thunkAPI) => {
+    try {
+      const response = await axios.post('/user/login', userData)
+      if (response) {
+        thunkAPI.dispatch(setSuccessMessage(response.data.message))
+        thunkAPI.dispatch(setAccessToken(response.data.accessToken))
+        return response.data
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        thunkAPI.dispatch(setErrorMessage(error.response?.data.message))
+      }
     }
   }
 )
@@ -48,6 +74,10 @@ const authSlice = createSlice({
     resetAuth: (state) => {
       state.refreshToken = ''
       state.accessToken = ''
+      state.userType = ''
+    },
+    setSuccessMessage: (state, action) => {
+      state.successMessage = action.payload
     },
     setErrorMessage: (state, action) => {
       state.errorMessage = action.payload
@@ -58,6 +88,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      //refreshToken
       .addCase(refreshToken.pending, (state) => {
         state.isLoading = true
       })
@@ -70,6 +101,7 @@ const authSlice = createSlice({
         state.isLoading = false
         state.isError = true
       })
+      //logout
       .addCase(logout.pending, (state) => {
         state.isLoading = true
       })
@@ -81,8 +113,29 @@ const authSlice = createSlice({
         state.isLoading = false
         state.isError = true
       })
+      //Login
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.isError = false
+        state.userType = action.payload.userType
+        if (typeof action.payload === 'string') {
+          state.message = action.payload
+        }
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        if (typeof action.payload === 'string') {
+          state.message = action.payload
+        }
+      })
   },
 })
 
-export const { resetAuth, setErrorMessage, setAccessToken } = authSlice.actions
+export const { resetAuth, setErrorMessage, setAccessToken, setSuccessMessage } =
+  authSlice.actions
 export default authSlice.reducer

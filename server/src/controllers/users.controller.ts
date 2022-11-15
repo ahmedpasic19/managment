@@ -215,6 +215,7 @@ const loginUser = async (req: Request, res: Response) => {
         .json({
           message: 'Successfuly loged in',
           accessToken: accessToken,
+          userType: requestedUser.userType,
         })
     }
   } catch (error) {
