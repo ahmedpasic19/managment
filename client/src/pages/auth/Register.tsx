@@ -1,5 +1,4 @@
 import Select, { StylesConfig } from 'react-select'
-import styles from './Register.module.css'
 import { registerUser } from '../../features/users/userSlice'
 import { useState, FormEvent, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
@@ -10,7 +9,7 @@ import {
   setUserErrorMessage,
   setMessage,
 } from '../../features/users/userSlice'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 type User = {
   firstName: string
@@ -131,6 +130,13 @@ const Register = () => {
 
   //Styles for react-select
   const customStyles: StylesConfig = {
+    control: (base) => ({
+      ...base,
+      height: 50,
+      width: '100%',
+      borderRadius: '12px',
+      marginTop: 4,
+    }),
     singleValue: (base) => ({
       ...base,
       width: 300,
@@ -145,62 +151,101 @@ const Register = () => {
   }
 
   return (
-    <div className={styles['register-container']}>
+    <div className='register-wraper'>
       <ToastContainer />
-      <form className={styles['register-form']}>
-        <h1>Register</h1>
+      <form className='register-form'>
+        <nav>
+          <h1>Register</h1>
+        </nav>
         <div>
-          <label htmlFor='email'>Email</label>
+          <div>
+            <label htmlFor='email'>Email</label>
+          </div>
         </div>
-        <input
-          type='text'
-          name='email'
-          value={userData.email || ''}
-          id='email'
-          onChange={handleChange}
-        />
         <div>
-          <label htmlFor='firstName'>First name</label>
+          <div>
+            <input
+              className='mb-4'
+              type='text'
+              name='email'
+              value={userData.email || ''}
+              id='email'
+              onChange={handleChange}
+            />
+          </div>
         </div>
-        <input
-          type='text'
-          name='firstName'
-          value={userData.firstName || ''}
-          id='firstName'
-          onChange={handleChange}
-        />
         <div>
-          <label htmlFor='lastName'>Last name</label>
+          <div>
+            <label htmlFor='firstName'>First name</label>
+          </div>
         </div>
-        <input
-          type='text'
-          name='lastName'
-          value={userData.lastName || ''}
-          id='lastName'
-          onChange={handleChange}
-        />
         <div>
-          <label htmlFor='password'>Password</label>
+          <div>
+            <input
+              className='mb-4'
+              type='text'
+              name='firstName'
+              value={userData.firstName || ''}
+              id='firstName'
+              onChange={handleChange}
+            />
+          </div>
         </div>
-        <input
-          type='password'
-          name='password'
-          value={userData.password || ''}
-          id='password'
-          onChange={handleChange}
-        />
         <div>
-          <label htmlFor='phoneNumber'>Phone number</label>
+          <div>
+            <label htmlFor='lastName'>Last name</label>
+          </div>
         </div>
-        <input
-          type='number'
-          name='phoneNumber'
-          value={userData.phoneNumber || ''}
-          id='phoneNumber'
-          onChange={handleChange}
-        />
         <div>
-          <label htmlFor='type'>Type of user?</label>
+          <div>
+            <input
+              className='mb-4'
+              type='text'
+              name='lastName'
+              value={userData.lastName || ''}
+              id='lastName'
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label htmlFor='password'>Password</label>
+          </div>
+        </div>
+        <div>
+          <div>
+            <input
+              className='mb-4'
+              type='password'
+              name='password'
+              value={userData.password || ''}
+              id='password'
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label htmlFor='phoneNumber'>Phone number</label>
+          </div>
+        </div>
+        <div>
+          <div>
+            <input
+              className='mb-4'
+              type='number'
+              name='phoneNumber'
+              value={userData.phoneNumber || ''}
+              id='phoneNumber'
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div>
+          <div>
+            <label htmlFor='type'>Type of user?</label>
+          </div>
         </div>
         <Select
           options={options}
@@ -214,7 +259,14 @@ const Register = () => {
             }
           }}
         />
-        <button onClick={handleRegister}>Register</button>
+        <div>
+          <button onClick={handleRegister}>Register</button>
+        </div>
+        <section>
+          <div>
+            <Link to='/'>Already have an accont?</Link>
+          </div>
+        </section>
       </form>
     </div>
   )
