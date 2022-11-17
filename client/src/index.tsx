@@ -4,6 +4,8 @@ import { persistore, store } from './app/store'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
+import './index.css'
+
 //Persist data
 import { PersistGate } from 'redux-persist/integration/react'
 

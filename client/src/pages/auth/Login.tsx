@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { FormEvent, useState, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-import styles from './Login.module.css'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { loginUser } from '../../features/auth/authSlice'
 import {
@@ -81,44 +80,51 @@ const Login = () => {
   }
 
   return (
-    <div className={styles['login-container']}>
+    <div className='login-container'>
       <ToastContainer />
-      <form className={styles['login-form']}>
-        <h1>Sign in</h1>
+      <form className='login-form'>
+        <nav>
+          <h1>Sign in</h1>
+        </nav>
         <div>
-          <label htmlFor='email'>Email</label>
+          <div>
+            <label htmlFor='email'>Email</label>
+          </div>
         </div>
-        <input
-          type='text'
-          name='email'
-          value={userData.email || ''}
-          id='email'
-          onChange={handleChange}
-        />
+        <div className='mb-5'>
+          <div>
+            <input
+              type='text'
+              name='email'
+              value={userData.email || ''}
+              id='email'
+              onChange={handleChange}
+            />
+          </div>
+        </div>
         <div>
-          <label htmlFor='password'>Password</label>
+          <div>
+            <label htmlFor='password'>Password</label>
+          </div>
         </div>
-        <input
-          type='password'
-          name='password'
-          value={userData.password || ''}
-          id='password'
-          onChange={handleChange}
-        />
-        <button onClick={handleSignIn}>Sign in</button>
+        <div>
+          <div>
+            <input
+              type='password'
+              name='password'
+              value={userData.password || ''}
+              id='password'
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div>
+          <button onClick={handleSignIn}>Sign in</button>
+        </div>
         <section>
-          <Link to='/register'>Don't have an accont?</Link>
-          <label htmlFor='rememberMe'>
-            Remember me
-            <label htmlFor='rememberMe' className={styles['round']}>
-              <input
-                type='checkbox'
-                name=''
-                id='rememberMe'
-                className={styles['checkbox']}
-              />
-            </label>
-          </label>
+          <div>
+            <Link to='/register'>Don't have an accont?</Link>
+          </div>
         </section>
       </form>
     </div>

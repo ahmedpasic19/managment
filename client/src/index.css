@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
+  @apply bg-;
+} */
+
+.login-container {
+  @apply h-full w-full flex justify-center;
+}
+
+.login-form {
+  @apply phone:h-screen phone:w-full flex flex-col bg-[#4C5844] justify-center;
+}
+
+.login-form > div {
+  @apply w-full flex justify-center items-center;
+}
+
+.login-form > div > div {
+  @apply w-4/5;
+}
+.login-form > div > div > label {
+  @apply text-xl mb-2 font-semibold text-[#489CA6];
+}
+
+.login-form > nav {
+  @apply w-full flex justify-center items-center mb-10;
+}
+.login-form > nav > h1 {
+  @apply text-4xl font-bold text-[#489CA6];
+}
+
+.login-form > div > div > input {
+  @apply w-full h-[50px] rounded-xl outline-none p-4;
+}
+.login-form > div > button {
+  @apply w-3/5 h-[50px] text-xl font-bold my-10 bg-[#489CA6] text-[#4C5844] rounded-xl outline-none cursor-pointer drop-shadow-2xl;
+}
+.login-form > section {
+  @apply w-full flex justify-center items-center text-[#42F2F7];
+}
+.login-form > section > div {
+  @apply w-4/5;
+}
