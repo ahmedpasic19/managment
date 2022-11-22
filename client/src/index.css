@@ -42,8 +42,11 @@
 }
 
 /* Register from */
+.register-wraper {
+  @apply w-full flex justify-center items-center h-full bg-gradient-to-br from-[#4C5844] to-[#4B6858] justify-center pt-10;
+}
 .register-form {
-  @apply phone:h-screen phone:w-full flex flex-col bg-gradient-to-br from-[#4C5844] to-[#4B6858] justify-center;
+  @apply phone:h-screen phone:w-full flex flex-col max-w-[450px];
 }
 .register-form > nav {
   @apply w-full flex justify-center items-center;
@@ -78,7 +81,7 @@
   @apply w-full h-12 bg-pg drop-shadow-2xl relative;
 }
 .navbar {
-  @apply flex relative;
+  @apply flex relative z-50;
 }
 .navbar > button {
   @apply absolute right-10 top-[8px] rounded-xl bg-[#4C5844] text-[#42F2F7] p-1 phone:hidden;
@@ -86,7 +89,7 @@
 
 /* Hamburger */
 .hamburger {
-  @apply w-7 h-8 absolute phone:visible right-8 top-2 flex flex-col justify-evenly items-center;
+  @apply w-7 h-8 absolute phone:visible right-8 top-2 flex flex-col justify-evenly items-center cursor-pointer;
 }
 .hamburger > span {
   @apply h-1 w-full bg-pb phone:visible;
@@ -94,7 +97,7 @@
 
 /* sidebar */
 .sidebar {
-  @apply absolute right-0 bg-pg h-screen px-5 z-50 border-gray-600 border-l-[1px] drop-shadow-2xl;
+  @apply absolute right-0 bg-pg h-screen px-5 z-50 border-gray-600 border-l-[1px] drop-shadow-2xl z-0;
 }
 .sidebar > ul {
   @apply mt-10 w-full flex flex-col h-[300px];

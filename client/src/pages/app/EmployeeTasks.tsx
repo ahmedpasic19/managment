@@ -1,6 +1,5 @@
 import MaterialTable from 'material-table'
 import {
-  getAllTasks,
   getEmployeeTasks,
   setErrorMessage,
   setSuccessMessage,
@@ -77,31 +76,36 @@ const EmployeeTasks = () => {
   return (
     <div>
       <ToastContainer />
-      <MaterialTable
-        // icons={tableIcons}
-        title='Employee tasks'
-        columns={columns}
-        data={taskData}
-        actions={[
-          {
-            icon: () => <CheckIcon />,
-            tooltip: 'Compleate task',
-            onClick: (event, rowData) => {
-              if (rowData instanceof Array) return
-              if (rowData) {
-                setOpenComplete(true)
-                setTask(rowData)
-              }
+      <div className='w-full flex justify-center items-center mt-10'>
+        <h1 className='font-bold text-4xl'>Employee Tasks</h1>
+      </div>
+      <div className='mt-10'>
+        <MaterialTable
+          style={{ zIndex: -1 }}
+          title=''
+          columns={columns}
+          data={taskData}
+          actions={[
+            {
+              icon: () => <CheckIcon />,
+              tooltip: 'Compleate task',
+              onClick: (event, rowData) => {
+                if (rowData instanceof Array) return
+                if (rowData) {
+                  setOpenComplete(true)
+                  setTask(rowData)
+                }
+              },
             },
-          },
-        ]}
-        options={{ actionsColumnIndex: -1 }}
-      />
-      <CompleteTaskModal
-        open={openComplete}
-        onClose={() => setOpenComplete(false)}
-        task={task}
-      />
+          ]}
+          options={{ actionsColumnIndex: -1 }}
+        />
+        <CompleteTaskModal
+          open={openComplete}
+          onClose={() => setOpenComplete(false)}
+          task={task}
+        />
+      </div>
     </div>
   )
 }

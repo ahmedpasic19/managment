@@ -83,69 +83,75 @@ const CompletedTasks = () => {
   }, [errorMessage, successMessage, isError, isSuccess])
 
   return (
-    <div>
+    <div className='mt-10'>
       <ToastContainer />
-      <MaterialTable
-        title='All tasks'
-        columns={columns}
-        data={taskData}
-        actions={[
-          {
-            icon: () => <CheckIcon />,
-            tooltip: 'Compleate task',
-            onClick: (event, rowData) => {
-              if (rowData instanceof Array) return
-              if (rowData) {
-                setOpenComplete(true)
-                setTask(rowData)
-              }
+      <div className='w-full flex justify-center items-center'>
+        <h1 className='text-4xl font-bold'>Completed Tasks</h1>
+      </div>
+      <div className='mt-10'>
+        <MaterialTable
+          title=''
+          style={{ zIndex: -1 }}
+          columns={columns}
+          data={taskData}
+          actions={[
+            {
+              icon: () => <CheckIcon />,
+              tooltip: 'Compleate task',
+              onClick: (event, rowData) => {
+                if (rowData instanceof Array) return
+                if (rowData) {
+                  setOpenComplete(true)
+                  setTask(rowData)
+                }
+              },
             },
-          },
-          {
-            icon: () => <Edit />,
-            tooltip: 'Edit task',
-            onClick: (event, rowData) => {
-              if (rowData instanceof Array) return
-              if (rowData) {
-                setTask(rowData)
-                setOpenEdit(true)
-              }
+            {
+              icon: () => <Edit />,
+              tooltip: 'Edit task',
+              onClick: (event, rowData) => {
+                if (rowData instanceof Array) return
+                if (rowData) {
+                  setTask(rowData)
+                  setOpenEdit(true)
+                }
+              },
             },
-          },
-          {
-            icon: () => <DeleteOutline />,
-            tooltip: 'Delete task',
-            onClick: (event, rowData) => {
-              if (rowData instanceof Array) return
-              if (rowData) {
-                setTask(rowData)
-                setOpenDelete(true)
-              }
+            {
+              icon: () => <DeleteOutline />,
+              tooltip: 'Delete task',
+              onClick: (event, rowData) => {
+                if (rowData instanceof Array) return
+                if (rowData) {
+                  setTask(rowData)
+                  setOpenDelete(true)
+                }
+              },
             },
-          },
-        ]}
-        options={{ actionsColumnIndex: -1 }}
-      />
-      <CompleteTaskModal
-        open={openComplete}
-        onClose={() => setOpenComplete(false)}
-        multi={true}
-        task={task}
-      />
-      <DeleteTaskModal
-        open={openDelete}
-        onClose={() => setOpenDelete(false)}
-        multi={true}
-        taskId={task._id}
-      />
-      <EditTaskModal
-        open={openEdit}
-        onClose={() => setOpenEdit(false)}
-        employeeEdit={true}
-        setTask={setTask}
-        multi={true}
-        task={task}
-      />
+          ]}
+          options={{ actionsColumnIndex: -1 }}
+        />
+        <CompleteTaskModal
+          open={openComplete}
+          onClose={() => setOpenComplete(false)}
+          multi={true}
+          task={task}
+        />
+        <DeleteTaskModal
+          open={openDelete}
+          onClose={() => setOpenDelete(false)}
+          multi={true}
+          taskId={task._id}
+        />
+        <EditTaskModal
+          open={openEdit}
+          onClose={() => setOpenEdit(false)}
+          employeeEdit={true}
+          setTask={setTask}
+          multi={true}
+          task={task}
+        />
+      </div>
     </div>
   )
 }
