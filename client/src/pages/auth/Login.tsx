@@ -121,11 +121,6 @@ const Login = () => {
         <div>
           <button onClick={handleSignIn}>Sign in</button>
         </div>
-        <section>
-          <div>
-            <Link to='/register'>Don't have an accont?</Link>
-          </div>
-        </section>
       </form>
     </div>
   )

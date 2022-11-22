@@ -6,7 +6,7 @@ export const ProtectAdmin = () => {
 
   const location = useLocation()
   const from = location.state?.from?.pathname || '/'
-  console.log(from)
+
   return userType !== 'admin' ? (
     <Navigate to={from} state={{ from: location }} replace={true} />
   ) : (

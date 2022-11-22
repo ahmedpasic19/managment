@@ -26,7 +26,6 @@ function App() {
           <Route path='/'>
             <Route element={<ProtectAuth />}>
               <Route path='/' element={<Login />} />
-              <Route path='/register' element={<Register />} />
             </Route>
           </Route>
           {/* Page routes */}
@@ -35,6 +34,7 @@ function App() {
               <Route path='tasks' element={<AllTasks />} />
               <Route path='completed-tasks' element={<CompletedTasks />} />
               <Route path='employees' element={<AssignTasks />} />
+              <Route path='/register' element={<Register />} />
             </Route>
           </Route>
           {/* Requre permission */}

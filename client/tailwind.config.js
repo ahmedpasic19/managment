@@ -5,6 +5,10 @@ module.exports = {
       screens: {
         phone: '380px',
       },
+      colors: {
+        pg: '#4B6858',
+        pb: '#489CA6',
+      },
     },
   },
   plugins: [],
