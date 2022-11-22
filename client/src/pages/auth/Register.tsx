@@ -262,11 +262,6 @@ const Register = () => {
         <div>
           <button onClick={handleRegister}>Register</button>
         </div>
-        <section>
-          <div>
-            <Link to='/'>Already have an accont?</Link>
-          </div>
-        </section>
       </form>
     </div>
   )
