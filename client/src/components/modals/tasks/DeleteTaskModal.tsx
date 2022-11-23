@@ -1,7 +1,5 @@
 import ReactDOM from 'react-dom'
-import styles from './AssignTaskModal.module.css'
 import { MouseEvent } from 'react'
-import { AsyncThunk } from '@reduxjs/toolkit'
 import { useAppDispatch } from '../../../app/hooks'
 import usePrivateRoute from '../../../hooks/usePrivateRoute'
 import { deleteTask } from '../../../features/tasks/taskSlice'
@@ -31,15 +29,21 @@ const DeleteTaskModal = ({ open, onClose, taskId, multi }: Props) => {
 
   return ReactDOM.createPortal(
     <>
-      <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
-        <span>
-          <h3>Do you want to delete this task?</h3>
-        </span>
+      <div className='overlay' onClick={onClose} />
+      <div className='delete-modal'>
         <div>
-          <button onClick={submit}>Delete</button>
-          <button onClick={onClose}>Close</button>
+          <h1 className='font-bold text-center t-50 text-4xl text-pb my-10'>
+            Do you want to delete this task?
+          </h1>
         </div>
+        <section>
+          <button className='reject-button' onClick={onClose}>
+            Close
+          </button>
+          <button className='confirm-button' onClick={submit}>
+            Delete
+          </button>
+        </section>
       </div>
     </>,
     document.getElementById('portal')!

@@ -36,9 +36,7 @@ const EmployeeTasks = () => {
     { title: 'Location', field: 'location' },
     { title: 'User', field: 'username' },
     { title: 'Progress', field: 'progress' },
-    // { title: 'Done', field: 'isDone' },
     { title: 'Compleated at', field: 'compleatedAt' },
-    { title: 'Assigned at', field: 'assignedAt' },
   ]
 
   const taskData = allTasks.map((task) => ({ ...task }))

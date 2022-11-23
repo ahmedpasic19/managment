@@ -49,7 +49,6 @@ const AllTasks = () => {
     { title: 'User', field: 'username' },
     { title: 'Progress', field: 'progress' },
     { title: 'Compleated at', field: 'compleatedAt' },
-    { title: 'Assigned at', field: 'assignedAt' },
   ]
 
   const taskData = allTasks.map((task) => ({ ...task }))

@@ -1,11 +1,8 @@
 import ReactDOM from 'react-dom'
-import styles from './AssignTaskModal.module.css'
 import { completeTask, DBTask } from '../../../features/tasks/taskSlice'
 import { MouseEvent } from 'react'
 import { useAppDispatch } from '../../../app/hooks'
-import { AsyncThunk } from '@reduxjs/toolkit'
 import usePrivateRoute from '../../../hooks/usePrivateRoute'
-import { AxiosInstance } from 'axios'
 
 type Props = {
   open: boolean
@@ -32,16 +29,40 @@ const CompleteTaskModal = ({ open, onClose, task, multi }: Props) => {
 
   return ReactDOM.createPortal(
     <>
-      <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
+      <div className='overlay' onClick={onClose} />
+      <div className='modal'>
+        <div>
+          <h1 className='font-bold text-4xl text-pb my-10'>Complete task</h1>
+        </div>
         <form>
-          <input type='text' value={task.title} readOnly />
-          <textarea value={task.description} readOnly />
-          <input type='text' value={task.location} readOnly />
+          <div>
+            <div>
+              <label>Title</label>
+            </div>
+            <input type='text' value={task.title} readOnly />
+          </div>
+          <div>
+            <div>
+              <label>
+                <h1>Description</h1>
+              </label>
+            </div>
+            <textarea value={task.description} readOnly />
+          </div>
+          <div>
+            <div>
+              <label>Location</label>
+            </div>
+            <input type='text' value={task.location} readOnly />
+          </div>
         </form>
         <section className='modal-btn'>
-          <button onClick={submit}>Complete</button>
-          <button onClick={onClose}>Close</button>
+          <button className='reject-button' onClick={onClose}>
+            Close
+          </button>
+          <button className='confirm-button' onClick={submit}>
+            Complete
+          </button>
         </section>
       </div>
     </>,

@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom'
-import styles from './AssignTaskModal.module.css'
 import { MouseEvent } from 'react'
 import { useAppDispatch } from '../../../app/hooks'
 import usePrivateRoute from '../../../hooks/usePrivateRoute'
@@ -25,15 +24,21 @@ const DeleteUserModal = ({ open, onClose, userId }: Props) => {
 
   return ReactDOM.createPortal(
     <>
-      <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
-        <span>
-          <h3>Do you want to delete this employee?</h3>
-        </span>
+      <div className='overlay' onClick={onClose} />
+      <div className='delete-modal'>
         <div>
-          <button onClick={handleDelete}>Delete</button>
-          <button onClick={onClose}>Close</button>
+          <h1 className='font-bold text-4xl text-pb text-center my-10'>
+            Do you want to delete this employee?
+          </h1>
         </div>
+        <section>
+          <button className='reject-button' onClick={onClose}>
+            Close
+          </button>
+          <button className='confirm-button' onClick={handleDelete}>
+            Delete
+          </button>
+        </section>
       </div>
     </>,
     document.getElementById('portal')!

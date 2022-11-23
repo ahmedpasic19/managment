@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom'
-import { ChangeEvent, MouseEvent } from 'react'
-import styles from './AssignTaskModal.module.css'
+import { ChangeEvent, MouseEvent, FormEvent } from 'react'
 import { DBUser } from '../../../features/users/userSlice'
 import { useAppDispatch } from '../../../app/hooks'
 import { toast } from 'react-toastify'
@@ -55,7 +54,9 @@ const AssignTskModal = ({
     setNewTask(newObj)
   }
 
-  const handleCreateTask = (e: MouseEvent<HTMLElement>) => {
+  const handleCreateTask = (
+    e: MouseEvent<HTMLElement> | FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault()
     let keys = Object.values(newTask).every((key) => key.trim())
     if (!keys) return fields()
@@ -75,25 +76,39 @@ const AssignTskModal = ({
 
   return ReactDOM.createPortal(
     <>
-      <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
-        <form action=''>
+      <div className='overlay' onClick={onClose} />
+      <div className='modal'>
+        <div>
+          <h1 className='font-bold text-4xl text-pb my-10'>Assign task</h1>
+        </div>
+        <form onSubmit={handleCreateTask}>
           <div>
-            <label>Title</label>
+            <div>
+              <label>Title</label>
+            </div>
             <input type='text' name='title' onChange={handleOnchange} />
           </div>
           <div>
-            <label>Description</label>
+            <div>
+              <label>Description</label>
+            </div>
             <input type='text' name='description' onChange={handleOnchange} />
           </div>
           <div>
-            <label>Location</label>
+            <div>
+              <label>Location</label>
+            </div>
             <input type='text' name='location' onChange={handleOnchange} />
           </div>
         </form>
-        <section className='modal-btn'>
-          <button onClick={handleCreateTask}>Assign</button>
-          <button onClick={onClose}>Close</button>
+
+        <section>
+          <button className='reject-button' onClick={onClose}>
+            Close
+          </button>
+          <button className='confirm-button' onClick={handleCreateTask}>
+            Assign
+          </button>
         </section>
       </div>
     </>,

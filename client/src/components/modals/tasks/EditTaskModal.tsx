@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom'
-import styles from './AssignTaskModal.module.css'
 import { ChangeEvent, MouseEvent } from 'react'
 import { DBTask, editTask } from '../../../features/tasks/taskSlice'
 import { useAppDispatch } from '../../../app/hooks'
@@ -52,14 +51,16 @@ const EditTaskModal = ({
 
   return ReactDOM.createPortal(
     <>
-      <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
-        <span>
-          <h3>Edit task</h3>
-        </span>
+      <div className='overlay' onClick={onClose} />
+      <div className='modal'>
+        <div>
+          <h1 className='font-bold text-4xl text-pb my-10'>Edit task</h1>
+        </div>
         <form action=''>
           <div>
-            <label>Title</label>
+            <div>
+              <label>Title</label>
+            </div>
             <input
               type='text'
               defaultValue={task.title}
@@ -68,7 +69,9 @@ const EditTaskModal = ({
             />
           </div>
           <div>
-            <label>Description</label>
+            <div>
+              <label>Description</label>
+            </div>
             <input
               type='text'
               defaultValue={task.description}
@@ -78,7 +81,9 @@ const EditTaskModal = ({
           </div>
           {employeeEdit === false || !!employeeEdit ? (
             <div>
-              <label>Location</label>
+              <div>
+                <label>Location</label>
+              </div>
               <input
                 type='text'
                 defaultValue={task.location}
@@ -88,29 +93,24 @@ const EditTaskModal = ({
             </div>
           ) : null}
           <div>
-            <label>Progress status</label>
+            <div>
+              <label>Progress status</label>
+            </div>
             <select name='process'>
               <option value='awaiting'>Awaiting</option>
               <option value='process'>Working on it</option>
               <option value='completed'>Completed</option>
             </select>
           </div>
-          {/* Select user to re-assign to */}
-          {/* {
-            <div>
-              <label>Assigned to</label>
-              <select>
-                <option value='awaiting'>Awaiting</option>
-                <option value='process'>Working on it</option>
-                <option value='completed'>Completed</option>
-              </select>
-            </div>
-          } */}
         </form>
-        <div>
-          <button onClick={submit}>Save</button>
-          <button onClick={onClose}>Close</button>
-        </div>
+        <section>
+          <button className='reject-button' onClick={onClose}>
+            Close
+          </button>
+          <button className='confirm-button' onClick={submit}>
+            Save
+          </button>
+        </section>
       </div>
     </>,
     document.getElementById('portal')!

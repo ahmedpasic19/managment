@@ -114,3 +114,63 @@
 .sidebar > button {
   @apply absolute left-5 text-2xl text-white top-2;
 }
+
+/* modal styles */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: black;
+  opacity: 0.7;
+  z-index: 100;
+}
+
+.modal {
+  @apply fixed phone:top-[0] phone:left-[25%] z-[100] phone:h-full phone:w-full phone:translate-x-[-25%] flex justify-start items-center flex-col phone:translate-y-[-0%] bg-pg overflow-y-auto;
+}
+.modal > div {
+  @apply w-full flex justify-center items-center;
+}
+.modal > form > div > div {
+  @apply w-full flex;
+}
+.modal > form > div > div > label {
+  @apply text-2xl text-pb font-semibold mb-2;
+}
+.modal > form {
+  @apply flex flex-col justify-evenly w-4/5 max-w-[350px];
+}
+.modal > form > div {
+  @apply w-full flex flex-col;
+}
+.modal > form > div > input {
+  @apply p-4 h-[50] rounded-xl text-xl outline-none;
+}
+.modal > form > div > textarea {
+  @apply p-4 h-[100] rounded-xl text-xl outline-none;
+}
+.modal > form > div {
+  @apply mb-5;
+}
+
+.reject-button {
+  @apply p-3 text-pb text-xl font-bold rounded-xl border-pb border-4 w-[150px];
+}
+.confirm-button {
+  @apply p-3 text-pg bg-pb text-xl font-bold rounded-xl border-pb border-4 w-[150px];
+}
+.modal > section {
+  @apply my-10 w-full flex justify-evenly items-center max-w-[350px];
+}
+.modal > form > div > select {
+  @apply rounded-xl h-[50px] text-xl outline-none pl-4 pr-4;
+}
+.delete-modal {
+  @apply fixed phone:top-[0] h-[300px] phone:left-[25%] z-[100] phone:h-full phone:w-full phone:translate-x-[-25%] flex justify-start items-center flex-col phone:translate-y-[-0%] bg-pg;
+}
+.delete-modal > section {
+  @apply mt-10 w-full absolute bottom-20 flex justify-evenly items-center max-w-[350px];
+}

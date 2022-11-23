@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom'
-import styles from './AssignTaskModal.module.css'
 import { ChangeEvent, MouseEvent } from 'react'
 import { useAppDispatch } from '../../../app/hooks'
 import { DBUser, editUser } from '../../../features/users/userSlice'
@@ -42,14 +41,16 @@ const EditUserModal = ({ open, onClose, user, setUser }: Props) => {
 
   return ReactDOM.createPortal(
     <>
-      <div className={styles.overlay} onClick={onClose} />
-      <div className={styles.modal}>
-        <span>
-          <h3>Edit user</h3>
-        </span>
+      <div className='overlay' onClick={onClose} />
+      <div className='modal'>
+        <div>
+          <h1 className='font-bold text-4xl text-pb my-10'>Edit user</h1>
+        </div>
         <form action=''>
           <div>
-            <label>Email</label>
+            <div>
+              <label>Email</label>
+            </div>
             <input
               type='text'
               defaultValue={user.email}
@@ -58,7 +59,9 @@ const EditUserModal = ({ open, onClose, user, setUser }: Props) => {
             />
           </div>
           <div>
-            <label>First name</label>
+            <div>
+              <label>First name</label>
+            </div>
             <input
               type='text'
               defaultValue={user.firstName}
@@ -67,7 +70,9 @@ const EditUserModal = ({ open, onClose, user, setUser }: Props) => {
             />
           </div>
           <div>
-            <label>Last name</label>
+            <div>
+              <label>Last name</label>
+            </div>
             <input
               type='text'
               defaultValue={user.lastName}
@@ -76,7 +81,9 @@ const EditUserModal = ({ open, onClose, user, setUser }: Props) => {
             />
           </div>
           <div>
-            <label>Phone number</label>
+            <div>
+              <label>Phone number</label>
+            </div>
             <input
               type='number'
               defaultValue={user.phoneNumber}
@@ -85,7 +92,9 @@ const EditUserModal = ({ open, onClose, user, setUser }: Props) => {
             />
           </div>
           <div>
-            <label>Password</label>
+            <div>
+              <label>Password</label>
+            </div>
             <input
               type='password'
               placeholder='Password...'
@@ -94,18 +103,23 @@ const EditUserModal = ({ open, onClose, user, setUser }: Props) => {
             />
           </div>
           <div>
-            <label>User type</label>
+            <div>
+              <label>User type</label>
+            </div>
             <select name='process'>
-              <option value='awaiting'>Awaiting</option>
-              <option value='process'>Working on it</option>
-              <option value='completed'>Completed</option>
+              <option value='admin'>Admin</option>
+              <option value='employee'>Employee</option>
             </select>
           </div>
         </form>
-        <div>
-          <button onClick={submit}>Save</button>
-          <button onClick={onClose}>Close</button>
-        </div>
+        <section>
+          <button className='reject-button' onClick={onClose}>
+            Close
+          </button>
+          <button className='confirm-button' onClick={submit}>
+            Save
+          </button>
+        </section>
       </div>
     </>,
     document.getElementById('portal')!
