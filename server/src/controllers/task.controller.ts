@@ -117,7 +117,10 @@ const getUserTasks = async (req: Request, res: Response) => {
     if (!decoded._id)
       return res.status(400).json({ message: 'User ID required' })
 
-    const usersTasks = await Task.find({ assignedTo: decoded._id })
+    const usersTasks = await Task.find({
+      assignedTo: decoded._id,
+      isDone: false,
+    })
 
     if (!usersTasks) return res.status(404).json({ message: 'No tasks found' })
 

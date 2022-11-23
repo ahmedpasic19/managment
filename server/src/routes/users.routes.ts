@@ -10,7 +10,7 @@ import { adminRoute } from '../middleware/auth.middleware'
 const userRouter = express.Router()
 
 //POST User
-userRouter.post('/', adminRoute, createUser)
+userRouter.post('/', createUser)
 //DELETE User
 userRouter.delete('/:userId', adminRoute, deleteUser)
 //UPDATE User
