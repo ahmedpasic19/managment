@@ -87,7 +87,7 @@ const AllTasks = () => {
   }, [errorMessage, successMessage, isError, isSuccess])
 
   return (
-    <div>
+    <div className='h-full w-full'>
       <ToastContainer />
       <div className='w-full flex justify-center itemscenter mt-10'>
         <h1 className='text-4xl font-bold'>All Tasks</h1>
@@ -95,7 +95,7 @@ const AllTasks = () => {
       <div className='mt-10'>
         <MaterialTable
           // icons={tableIcons}
-          style={{ zIndex: -1 }}
+          style={{ zIndex: 1 }}
           title=''
           columns={columns}
           data={taskData}

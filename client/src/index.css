@@ -43,10 +43,10 @@
 
 /* Register from */
 .register-wraper {
-  @apply w-full flex justify-center items-center h-full bg-gradient-to-br from-[#4C5844] to-[#4B6858] justify-center pt-10;
+  @apply w-full phone:w-full flex justify-center items-center phone:mt-0 mt-20 justify-center;
 }
 .register-form {
-  @apply phone:h-screen phone:w-full flex flex-col max-w-[450px];
+  @apply phone:w-full phone:h-full phone:pt-3 pt-5 bg-[#4C5844] phone:rounded-none rounded-xl mt-10 phone:mt-0 flex flex-col max-w-[450px];
 }
 .register-form > nav {
   @apply w-full flex justify-center items-center;
@@ -67,7 +67,7 @@
   @apply w-full h-[50px] rounded-xl outline-none p-4 mt-1;
 }
 .register-form > div > button {
-  @apply w-3/5 h-[50px] text-xl font-bold my-10 bg-[#489CA6] text-[#4C5844] rounded-xl outline-none cursor-pointer drop-shadow-2xl;
+  @apply w-3/5 h-[50px] text-xl font-bold my-10 bg-[#489CA6] text-[#4C5844] rounded-xl z-[0] outline-none cursor-pointer drop-shadow-2xl;
 }
 .register-form > section {
   @apply w-full flex justify-center items-center text-[#42F2F7];
@@ -97,7 +97,7 @@
 
 /* sidebar */
 .sidebar {
-  @apply absolute right-0 bg-pg h-screen px-5 z-50 border-gray-600 border-l-[1px] drop-shadow-2xl z-0;
+  @apply absolute right-0 bg-pg h-screen px-5 z-50 border-gray-600 border-l-[1px] drop-shadow-2xl z-[100];
 }
 .sidebar > ul {
   @apply mt-10 w-full flex flex-col h-[300px];

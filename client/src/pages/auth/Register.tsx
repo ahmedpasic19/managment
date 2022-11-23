@@ -80,7 +80,6 @@ const Register = () => {
       success(usersSuccessMessage)
       dispatch(setUserSuccessMessage(''))
       setUserData({} as User)
-      navigate('/homepage')
       setUserType(null)
       return
     }
@@ -136,6 +135,7 @@ const Register = () => {
       width: '100%',
       borderRadius: '12px',
       marginTop: 4,
+      zIndex: 0,
     }),
     singleValue: (base) => ({
       ...base,

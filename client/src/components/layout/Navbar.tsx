@@ -28,7 +28,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className='navbar-wrapper'>
+    <div className='navbar-wrapper' style={{ zIndex: 10 }}>
       <div className='hamburger' onClick={() => setOpenSidebar(!openSidebar)}>
         <span></span>
         <span></span>
@@ -98,7 +98,7 @@ const Navbar = () => {
               replace
               state={{ from: location }}
             >
-              Employee Tasks
+              My Tasks
             </Link>
           )}
           {userType === 'admin' && (

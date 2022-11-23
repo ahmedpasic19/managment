@@ -74,14 +74,14 @@ const EmployeeTasks = () => {
   }, [errorMessage, successMessage, isError, isSuccess])
 
   return (
-    <div>
+    <div className='w-full h-full'>
       <ToastContainer />
       <div className='w-full flex justify-center items-center mt-10'>
         <h1 className='font-bold text-4xl'>Employee Tasks</h1>
       </div>
       <div className='mt-10'>
         <MaterialTable
-          style={{ zIndex: -1 }}
+          style={{ zIndex: 1 }}
           title=''
           columns={columns}
           data={taskData}

@@ -83,7 +83,7 @@ const CompletedTasks = () => {
   }, [errorMessage, successMessage, isError, isSuccess])
 
   return (
-    <div className='mt-10'>
+    <div className='mt-10 h-full w-full'>
       <ToastContainer />
       <div className='w-full flex justify-center items-center'>
         <h1 className='text-4xl font-bold'>Completed Tasks</h1>
@@ -91,7 +91,7 @@ const CompletedTasks = () => {
       <div className='mt-10'>
         <MaterialTable
           title=''
-          style={{ zIndex: -1 }}
+          style={{ zIndex: 1 }}
           columns={columns}
           data={taskData}
           actions={[

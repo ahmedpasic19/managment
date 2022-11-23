@@ -115,7 +115,7 @@ const AllEmployees = () => {
   const userData = userDataArray?.map((user) => ({ ...user }))
 
   return (
-    <div className='w-full h-screen'>
+    <div className='w-full h-full'>
       <ToastContainer />
       <div className='w-full flex justify-center items-center my-10'>
         <h1 className='text-4xl font-bold'>All Employees</h1>
@@ -123,7 +123,7 @@ const AllEmployees = () => {
       <div className='z-10 overflow-x-auto mt-10'>
         <MaterialTable
           columns={columns}
-          style={{ zIndex: -1 }}
+          style={{ zIndex: 1 }}
           title={''}
           data={userData}
           actions={[
