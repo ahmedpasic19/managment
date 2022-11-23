@@ -10,6 +10,8 @@ import { options } from './config/corsOptions'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { createUserOnStart } from './middleware/startup.middleware'
+import { notificationRouter } from './routes/notification.routes'
+import { authRoute } from './middleware/auth.middleware'
 
 const app = express()
 const PORT = 4001
@@ -31,6 +33,7 @@ app.use('/api/user', userRouter)
 app.use('/api/logout', logoutRoute)
 app.use('/api/refresh', refreshRouter)
 app.use('/api/task', taskRouter)
+app.use('/api/notifications', authRoute, notificationRouter)
 
 app.listen(PORT, () =>
   console.log('Running on port: ', PORT, 'Process id: ', process.pid)
