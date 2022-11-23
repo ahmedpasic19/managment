@@ -3,14 +3,23 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { logout } from '../../features/auth/authSlice'
 import LogoutIcon from '@mui/icons-material/Logout'
 import CloseIcon from '@mui/icons-material/Close'
-import { MouseEvent, useState, useEffect } from 'react'
+import {
+  MouseEvent,
+  useState,
+  useEffect,
+  SetStateAction,
+  Dispatch,
+} from 'react'
 
-const Navbar = () => {
+type props = {
+  setOpenSidebar: Dispatch<SetStateAction<boolean>>
+  openSidebar: boolean
+}
+
+const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
   const dispatch = useAppDispatch()
 
   const { userType } = useAppSelector((state) => state.auth)
-
-  const [openSidebar, setOpenSidebar] = useState(false)
 
   const navigate = useNavigate()
 
@@ -28,7 +37,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className='navbar-wrapper' style={{ zIndex: 10 }}>
+    <div className='navbar-wrapper' style={{ zIndex: 90 }}>
       <div className='hamburger' onClick={() => setOpenSidebar(!openSidebar)}>
         <span></span>
         <span></span>

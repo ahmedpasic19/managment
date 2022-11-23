@@ -9,7 +9,6 @@ import {
   CompletedTasks,
 } from './pages/pages'
 import Layout from './components/routes/Layout'
-import Navbar from './components/layout/Navbar'
 
 import {
   ProtectAdmin,
