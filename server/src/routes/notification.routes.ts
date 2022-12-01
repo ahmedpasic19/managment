@@ -8,7 +8,7 @@ import {
 } from '../controllers/notification.controller'
 
 //Create notification
-notificationRouter.post('/:userId', createNotification)
+notificationRouter.post('/', createNotification)
 //GET user notifications
 notificationRouter.get('/', getUserNotification)
 //DELETE all notifications

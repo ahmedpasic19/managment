@@ -1,14 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios, { Axios, AxiosInstance } from 'axios'
+import axios, { AxiosInstance } from 'axios'
 
 export type TNotification = {
   title: string
   description: string
   assignedTo: string
 }
+export type TDBNotification = {
+  _id: string
+  title: string
+  description: string
+  assignedTo: string
+}
 
 const initialState = {
-  notifications: [] as TNotification[],
+  notifications: [] as TDBNotification[],
   notificationErrorMessage: '',
   notificationSuccessMessage: '',
   isLoading: false,
@@ -22,7 +28,7 @@ export const getNotifications = createAsyncThunk(
   async (privateRoute: AxiosInstance, thunkAPI) => {
     try {
       const response = await privateRoute.get('/notifications')
-      if (response) return response
+      if (response) return response.data
     } catch (error) {
       if (axios.isAxiosError(error)) {
         thunkAPI.dispatch(
@@ -45,8 +51,14 @@ export const createNotification = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const response = privateRoute.post('/notifications')
-      if (response) return response
+      const response = await privateRoute.post(`/notifications`, {
+        taskCreated,
+        userId,
+      })
+      if (response) {
+        thunkAPI.dispatch(getNotifications(privateRoute))
+        return response.data
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         thunkAPI.dispatch(
@@ -63,7 +75,7 @@ export const deleteAllNotifications = createAsyncThunk(
   async (privateRoute: AxiosInstance, thunkAPI) => {
     try {
       const response = await privateRoute.delete('/notifications')
-      if (response) return response
+      if (response) return response.data
     } catch (error) {
       if (axios.isAxiosError(error)) {
         thunkAPI.dispatch(
@@ -88,7 +100,10 @@ export const deleteNotification = createAsyncThunk(
       const response = await privateRoute.delete(
         `/notifications/${notificationId}`
       )
-      return response
+      if (response) {
+        thunkAPI.dispatch(getNotifications(privateRoute))
+        return response.data
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         thunkAPI.dispatch(

@@ -14,6 +14,7 @@ const initialState = {
   successMessage: '',
   message: '',
   userType: '',
+  _id: 'string',
 }
 
 type LoginUser = {
@@ -122,6 +123,7 @@ const authSlice = createSlice({
         state.isSuccess = true
         state.isError = false
         state.userType = action.payload.userType
+        state._id = action.payload._id
         if (typeof action.payload === 'string') {
           state.message = action.payload
         }

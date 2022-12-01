@@ -193,7 +193,7 @@ const loginUser = async (req: Request, res: Response) => {
         { _id: requestedUser._id, email: email },
         accessSecret,
         {
-          expiresIn: '15s',
+          expiresIn: '1d',
         }
       )
       const refreshToken = jwt.sign(
@@ -215,6 +215,7 @@ const loginUser = async (req: Request, res: Response) => {
         .json({
           message: 'Successfuly loged in',
           accessToken: accessToken,
+          _id: requestedUser._id,
           userType: requestedUser.userType,
         })
     }

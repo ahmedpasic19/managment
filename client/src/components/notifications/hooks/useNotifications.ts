@@ -13,7 +13,6 @@ const useNotifications = () => {
   useEffect(() => {
     dispatch(getNotifications(privateRoute))
   }, [])
-
   return notifications
 }
 

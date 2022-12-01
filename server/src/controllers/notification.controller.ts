@@ -8,21 +8,23 @@ import { User } from '../models/user.model'
 //@desc     CREATE notification
 const createNotification = async (req: Request, res: Response) => {
   try {
-    const { taskCreated } = req.body
-    const { userId } = req.params
-
-    if (!!taskCreated) return res.status(400).json({ message: 'field requred' })
+    const { taskCreated, userId } = req.body
 
     if (!userId) return res.status(400).json({ message: 'User ID required' })
 
     const userName = await User.findOne({ _id: userId })
+
+    const adminUser = await User.findOne({ email: 'bejsikpejsik@gmail.com' })
+
+    if (!adminUser)
+      return res.status(400).json({ message: 'Cant get admin user' })
 
     if (!userName) return res.status(400).json({ message: 'User not found' })
 
     const newNotification = new Notification({
       title: taskCreated ? 'New task!' : 'Task completed',
       description: taskCreated ? 'View new tasks' : 'View completed task',
-      assignedTo: userId,
+      assignedTo: taskCreated ? userId : adminUser._id,
       userName,
     })
     console.log(newNotification)
@@ -43,19 +45,16 @@ const getUserNotification = async (req: Request, res: Response) => {
     if (!accessToken) return res.sendStatus(403)
 
     const decoded: { email: string; _id: string } = jwt_decode(accessToken)
-    console.log(decoded)
     if (!decoded._id)
       return res.status(400).json({ message: 'User ID required' })
 
     const allNotifications = await Notification.find({
       assignedTo: decoded._id,
     })
-    console.log(allNotifications)
     if (!allNotifications) return res.sendStatus(404)
 
     res.status(200).send(allNotifications)
   } catch (error) {
-    console.log('Server error in notification controller')
     res.status(500).send(error)
   }
 }
@@ -73,11 +72,11 @@ const deleteAllNotifications = async (req: Request, res: Response) => {
 
     if (!decoded._id)
       return res.status(400).json({ message: 'User ID required' })
-
-    await Notification.findByIdAndDelete({ assignedTo: decoded._id })
-
+    console.log(decoded)
+    await Notification.deleteMany({ assignedTo: decoded._id })
     res.status(204).json({ message: 'Notificatons deleted' })
   } catch (error) {
+    console.log('Error in delete all notifications')
     res.status(500).send(error)
   }
 }

@@ -15,7 +15,7 @@ type Props = {
 const CompleteTaskModal = ({ open, onClose, task, multi }: Props) => {
   const dispatch = useAppDispatch()
 
-  const { user } = useAppSelector((state) => state.auth)
+  const { user, _id } = useAppSelector((state) => state.auth)
 
   const privateRoute = usePrivateRoute()
 
@@ -29,10 +29,17 @@ const CompleteTaskModal = ({ open, onClose, task, multi }: Props) => {
         createNotification({
           privateRoute,
           taskCreated: false,
-          userId: user._id,
+          userId: _id,
         })
       )
     } else {
+      dispatch(
+        createNotification({
+          privateRoute,
+          taskCreated: false,
+          userId: _id,
+        })
+      )
       dispatch(completeTask({ privateRoute, taskId: task._id }))
     }
   }
