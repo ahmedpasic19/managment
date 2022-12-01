@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { Notification } from '../models/notification.model'
 import jwt_decode from 'jwt-decode'
+import { User } from '../models/user.model'
 
 //@service  POST
 //@route    /notivications
@@ -14,12 +15,17 @@ const createNotification = async (req: Request, res: Response) => {
 
     if (!userId) return res.status(400).json({ message: 'User ID required' })
 
+    const userName = await User.findOne({ _id: userId })
+
+    if (!userName) return res.status(400).json({ message: 'User not found' })
+
     const newNotification = new Notification({
       title: taskCreated ? 'New task!' : 'Task completed',
       description: taskCreated ? 'View new tasks' : 'View completed task',
       assignedTo: userId,
+      userName,
     })
-
+    console.log(newNotification)
     newNotification.save()
     res.sendStatus(200)
   } catch (error) {
@@ -37,16 +43,19 @@ const getUserNotification = async (req: Request, res: Response) => {
     if (!accessToken) return res.sendStatus(403)
 
     const decoded: { email: string; _id: string } = jwt_decode(accessToken)
-
+    console.log(decoded)
     if (!decoded._id)
       return res.status(400).json({ message: 'User ID required' })
 
-    const allNotifications = Notification.find({ assignedTo: decoded._id })
-
+    const allNotifications = await Notification.find({
+      assignedTo: decoded._id,
+    })
+    console.log(allNotifications)
     if (!allNotifications) return res.sendStatus(404)
 
     res.status(200).send(allNotifications)
   } catch (error) {
+    console.log('Server error in notification controller')
     res.status(500).send(error)
   }
 }
@@ -65,7 +74,7 @@ const deleteAllNotifications = async (req: Request, res: Response) => {
     if (!decoded._id)
       return res.status(400).json({ message: 'User ID required' })
 
-    Notification.findByIdAndDelete({ assignedTo: decoded._id })
+    await Notification.findByIdAndDelete({ assignedTo: decoded._id })
 
     res.status(204).json({ message: 'Notificatons deleted' })
   } catch (error) {
@@ -80,7 +89,7 @@ const deleteNotification = async (req: Request, res: Response) => {
   try {
     const { notificationId } = req.params
 
-    Notification.findOneAndDelete({ _id: notificationId })
+    await Notification.findOneAndDelete({ _id: notificationId })
 
     res.status(204).json({ message: 'Notificaton deleted' })
   } catch (error) {

@@ -1,8 +1,9 @@
 import ReactDOM from 'react-dom'
 import { completeTask, DBTask } from '../../../features/tasks/taskSlice'
 import { MouseEvent } from 'react'
-import { useAppDispatch } from '../../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import usePrivateRoute from '../../../hooks/usePrivateRoute'
+import { createNotification } from '../../../features/notifications/notificationsSlice'
 
 type Props = {
   open: boolean
@@ -14,6 +15,8 @@ type Props = {
 const CompleteTaskModal = ({ open, onClose, task, multi }: Props) => {
   const dispatch = useAppDispatch()
 
+  const { user } = useAppSelector((state) => state.auth)
+
   const privateRoute = usePrivateRoute()
 
   if (!open) return null
@@ -22,6 +25,13 @@ const CompleteTaskModal = ({ open, onClose, task, multi }: Props) => {
     e.preventDefault()
     if (multi) {
       dispatch(completeTask({ privateRoute, taskId: task._id, multi }))
+      dispatch(
+        createNotification({
+          privateRoute,
+          taskCreated: false,
+          userId: user._id,
+        })
+      )
     } else {
       dispatch(completeTask({ privateRoute, taskId: task._id }))
     }

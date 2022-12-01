@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom'
+import useNotifications from '../../components/notifications/hooks/useNotifications'
+import Notification from '../../components/notifications/Notification'
 
 const HomePage = () => {
+  const notification = useNotifications()
   return (
     <div>
-      HomePage
-      <Link to='/assign-tasks'>Assign tasks</Link>
+      {notification.map((notification) => (
+        <Notification notification={notification} />
+      ))}
     </div>
   )
 }

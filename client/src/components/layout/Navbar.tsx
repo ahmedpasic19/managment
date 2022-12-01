@@ -25,15 +25,10 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
 
   const location = useLocation()
 
-  useEffect(() => {
-    if (userType === '') {
-      navigate('/', { replace: true })
-    }
-  }, [userType])
-
   const handleLogout = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     dispatch(logout())
+    navigate('/', { replace: true })
   }
 
   return (

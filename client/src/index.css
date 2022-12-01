@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-  @apply bg-;
-} */
+html,
+body {
+  @apply h-screen bg-gray-600 relative;
+}
 
 /* Login from */
 .login-container {
@@ -43,10 +44,10 @@
 
 /* Register from */
 .register-wraper {
-  @apply w-full phone:w-full flex justify-center items-center phone:mt-0 mt-20 justify-center;
+  @apply w-full h-full bg-gray-600 phone:w-full flex justify-center items-center phone:mt-0 mt-20 justify-center;
 }
 .register-form {
-  @apply phone:w-full phone:h-full phone:pt-3 pt-5 bg-[#4C5844] phone:rounded-none rounded-xl mt-10 phone:mt-0 flex flex-col max-w-[450px];
+  @apply phone:w-full phone:h-full phone:pt-3 pt-5 bg-[#4C5844] phone:rounded-none rounded-xl phone:mt-0 flex flex-col max-w-[450px];
 }
 .register-form > nav {
   @apply w-full flex justify-center items-center;

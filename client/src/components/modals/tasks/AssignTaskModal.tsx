@@ -5,6 +5,7 @@ import { useAppDispatch } from '../../../app/hooks'
 import { toast } from 'react-toastify'
 import usePrivateRoute from '../../../hooks/usePrivateRoute'
 import { assignTask } from '../../../features/tasks/taskSlice'
+import { createNotification } from '../../../features/notifications/notificationsSlice'
 
 type Task = {
   title: string
@@ -72,6 +73,9 @@ const AssignTskModal = ({
           },
         })
       )
+    dispatch(
+      createNotification({ privateRoute, taskCreated: true, userId: user._id })
+    )
   }
 
   return ReactDOM.createPortal(

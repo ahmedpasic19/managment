@@ -151,7 +151,7 @@ const Register = () => {
   }
 
   return (
-    <div className='register-wraper'>
+    <div className='w-full h-full relative flex justify-center phone:pt-0 pt-20'>
       <ToastContainer />
       <form className='register-form'>
         <nav>
@@ -244,7 +244,7 @@ const Register = () => {
         </div>
         <div>
           <div>
-            <label htmlFor='type'>Type of user?</label>
+            <label htmlFor='type'>Type of user</label>
           </div>
         </div>
         <Select
