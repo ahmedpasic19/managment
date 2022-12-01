@@ -4,7 +4,7 @@
 
 html,
 body {
-  @apply h-screen bg-gray-600 relative;
+  @apply h-screen relative;
 }
 
 /* Login from */

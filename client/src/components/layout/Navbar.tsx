@@ -47,6 +47,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
         <ul>
           {userType !== '' && (
             <Link
+              onClick={() => setOpenSidebar(false)}
               to='/homepage'
               style={{
                 color: '#fff',
@@ -67,6 +68,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
           )}
           {userType === 'admin' && (
             <Link
+              onClick={() => setOpenSidebar(false)}
               to='/employees'
               style={{
                 color: '#fff',
@@ -87,6 +89,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
           )}
           {userType === 'employee' && (
             <Link
+              onClick={() => setOpenSidebar(false)}
               to='/my-tasks'
               style={{
                 color: '#fff',
@@ -107,6 +110,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
           )}
           {userType === 'admin' && (
             <Link
+              onClick={() => setOpenSidebar(false)}
               to='/tasks'
               style={{
                 color: '#fff',
@@ -127,6 +131,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
           )}
           {userType === 'admin' && (
             <Link
+              onClick={() => setOpenSidebar(false)}
               to='/completed-tasks'
               style={{
                 color: '#fff',
@@ -147,6 +152,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
           )}
           {userType === 'admin' && (
             <Link
+              onClick={() => setOpenSidebar(false)}
               to='/register'
               style={{
                 color: '#fff',
@@ -167,6 +173,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
           )}
           {userType === '' && (
             <Link
+              onClick={() => setOpenSidebar(false)}
               to='/'
               style={{
                 color: '#fff',
@@ -187,6 +194,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }: props) => {
           )}
           {userType === '' && (
             <Link
+              onClick={() => setOpenSidebar(false)}
               to='/register'
               style={{
                 color: '#fff',
