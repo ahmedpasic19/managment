@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import * as dotenv from 'dotenv'
 import * as path from 'path'
 import connectDB from './config/db'
@@ -24,6 +24,15 @@ app.use(cookieParser())
 app.use(cors(options))
 
 connectDB()
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join('client/build')))
+  app.get('*', (req: Request, res: Response) =>
+    res.sendFile(
+      path.resolve(__dirname, '..', '..', 'client', 'build', 'index.html')
+    )
+  )
+}
 
 //Create admin on server start
 createUserOnStart()
